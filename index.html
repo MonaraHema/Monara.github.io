@@ -140,6 +140,29 @@
         @media (max-width: 768px) {
             .input-row { flex-direction: column; gap: 0; }
         }
+
+        /* --- ADMIN BOM PANEL --- */
+        #admin-panel {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); z-index: 10500; display: none; flex-direction: column;
+            padding: 40px 10%; box-sizing: border-box; overflow-y: auto;
+        }
+        .bom-table {
+            width: 100%; border-collapse: collapse; margin-top: 30px; background: var(--surface);
+            border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .bom-table th, .bom-table td {
+            padding: 15px 20px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .bom-table th {
+            font-family: 'Bebas Neue'; font-size: 1.5rem; color: var(--primary);
+            background: rgba(0,0,0,0.5); letter-spacing: 1px;
+        }
+        .bom-table tr:hover { background: rgba(157, 78, 221, 0.05); }
+        .bom-cost { color: #f87171; font-family: monospace; font-size: 1.1rem; }
+        .bom-profit { color: #4ade80; font-family: monospace; font-size: 1.1rem; font-weight: bold; }
+        .bom-retail { color: white; font-family: monospace; font-size: 1.1rem; font-weight: bold; }
+        .bom-spec { color: var(--text-muted); font-size: 0.85rem; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -160,6 +183,30 @@
             </div>
             <button class="btn" id="enterBtn" disabled style="width: 100%;">ENTER STORE</button>
         </div>
+    </div>
+
+    <div id="admin-panel">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--primary); padding-bottom: 10px;">
+            <div>
+                <h2 style="font-family: 'Bebas Neue'; font-size: 3.5rem; margin: 0; line-height: 1;">INTERNAL BOM INDEX</h2>
+                <p style="color: var(--text-muted); margin: 5px 0 0 0;">April 2026 Hardware Base Costs & Margins</p>
+            </div>
+            <button class="btn btn-outline" onclick="closeAdmin()">CLOSE ADMIN PANEL</button>
+        </div>
+
+        <table class="bom-table">
+            <thead>
+                <tr>
+                    <th>System Tier</th>
+                    <th>Base Spec Overview</th>
+                    <th>Est. HW Cost</th>
+                    <th>Gross Profit (Labour)</th>
+                    <th>Retail Website Price</th>
+                </tr>
+            </thead>
+            <tbody id="bom-table-body">
+                </tbody>
+        </table>
     </div>
 
     <div id="configurator">
@@ -227,6 +274,7 @@
         
         <footer style="background: #000; border-top: 1px solid rgba(255,255,255,0.05); padding: 4rem 10% 2rem 10%; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
             <p>&copy; 2026 Monara Tech UK. All rights reserved. Not affiliated with any hardware manufacturer.</p>
+            <p style="margin-top: 20px;"><a onclick="openAdmin()" style="color: #444; cursor: pointer; font-size: 0.75rem; text-decoration: none;">[ Admin Panel ]</a></p>
         </footer>
     </div>
 
@@ -254,6 +302,40 @@
             mainSite.style.display = 'block';
             setTimeout(() => mainSite.style.opacity = '1', 100);
         });
+
+        // --- ADMIN PANEL LOGIC ---
+        const adminData = [
+            { tier: "The Starter Pack", spec: "Ryzen 5 7600 / RTX 4060 8GB / 16GB RAM / 1TB NVMe", cost: 753.40, profit: 195.60, retail: 949.00 },
+            { tier: "The Steambox", spec: "Ryzen 5 9600X / RTX 4060 Ti / 32GB RAM / 1TB NVMe", cost: 1205.80, profit: 293.20, retail: 1499.00 },
+            { tier: "Streamer Rig", spec: "Core Ultra 5 245K / RTX 5070 / 32GB RAM / 2TB NVMe", cost: 1538.50, profit: 460.50, retail: 1999.00 },
+            { tier: "Elite Gaming", spec: "Ryzen 7 7800X3D / RTX 5070 Ti / 32GB RAM / 2TB NVMe", cost: 1664.00, profit: 485.00, retail: 2149.00 },
+            { tier: "VR Master", spec: "Core Ultra 7 265K / RTX 5080 / 32GB RAM / 2TB NVMe", cost: 2089.00, profit: 310.00, retail: 2399.00 },
+            { tier: "Workstation Pro", spec: "Ryzen 9 9950X / RTX 5090 / 64GB RAM / 4TB NVMe", cost: 3685.00, profit: 614.00, retail: 4299.00 }
+        ];
+
+        const adminBody = document.getElementById('bom-table-body');
+        adminData.forEach(row => {
+            adminBody.innerHTML += `
+                <tr>
+                    <td style="font-weight: bold; color: var(--text-main);">${row.tier}</td>
+                    <td class="bom-spec">${row.spec}</td>
+                    <td class="bom-cost">£${row.cost.toFixed(2)}</td>
+                    <td class="bom-profit">£${row.profit.toFixed(2)}</td>
+                    <td class="bom-retail">£${row.retail.toFixed(2)}</td>
+                </tr>
+            `;
+        });
+
+        function openAdmin() {
+            document.getElementById('main-site').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'flex';
+            window.scrollTo(0,0);
+        }
+
+        function closeAdmin() {
+            document.getElementById('admin-panel').style.display = 'none';
+            document.getElementById('main-site').style.display = 'block';
+        }
 
         // --- 2026 UK HARDWARE DATA ARCHITECTURE ---
         const catalog = {
