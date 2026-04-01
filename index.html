@@ -3,331 +3,316 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monara PC Builds | Custom Rigs</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <title>Monara Tech | Premium Custom Systems</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Plus+Jakarta+Sans:wght@300;500;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #00f2ff; /* Cyan */
-            --accent: #ff00ff;  /* Neon Pink */
-            --bg: #050505;
-            --glass: rgba(20, 20, 20, 0.8);
+            --primary: #a855f7; /* Vibrant Purple */
+            --accent: #d8b4fe;  /* Light Purple */
+            --bg: #0b0612;      /* Deep Midnight Purple */
+            --card-bg: rgba(30, 20, 50, 0.4);
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
         body {
             margin: 0;
             background-color: var(--bg);
-            color: #fff;
-            font-family: 'Inter', sans-serif;
+            color: #ececec;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        /* Animated Background */
-        .neon-mesh {
+        /* Ambient Background */
+        .ambient-glow {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(45deg, #0a0a0a 25%, #111 25%, #111 50%, #0a0a0a 50%, #0a0a0a 75%, #111 75%, #111 100%);
-            background-size: 50px 50px;
-            opacity: 0.2;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(168, 85, 247, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(124, 58, 237, 0.1) 0%, transparent 40%);
             z-index: -1;
         }
 
-        /* Header */
+        /* Navigation */
+        nav {
+            padding: 1.5rem 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(11, 6, 18, 0.8);
+            backdrop-filter: blur(15px);
+            position: fixed;
+            width: 80%;
+            top: 0; z-index: 1000;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 2px;
+            font-size: 1.4rem;
+        }
+
         header {
             height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: radial-gradient(circle at center, rgba(0, 242, 255, 0.1) 0%, transparent 70%);
+            text-align: center;
+            padding: 0 20px;
         }
 
-        .glitch-title {
+        header h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2.5rem, 10vw, 6rem);
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            text-shadow: 0 0 20px var(--primary);
-            margin: 0;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            background: linear-gradient(to bottom, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
         }
 
-        /* Grid */
+        /* Grid System */
+        .section-title {
+            text-align: center;
+            font-family: 'Orbitron';
+            color: var(--primary);
+            margin-top: 4rem;
+        }
+
         .container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            padding: 50px;
-            max-width: 1200px;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 25px;
+            padding: 50px 10%;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         .pc-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 20px;
+            background: var(--card-bg);
+            border: 1px solid rgba(168, 85, 247, 0.1);
+            padding: 35px;
+            border-radius: 24px;
             backdrop-filter: blur(10px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .pc-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--primary);
+            opacity: 0;
+            transition: 0.3s;
         }
 
         .pc-card:hover {
-            transform: scale(1.05);
+            transform: translateY(-10px);
             border-color: var(--primary);
-            box-shadow: 0 0 30px rgba(0, 242, 255, 0.3);
+            background: rgba(40, 25, 70, 0.6);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        .pc-card h2 {
-            font-family: 'Orbitron';
-            color: var(--primary);
-        }
+        .pc-card:hover::before { opacity: 1; }
 
-        /* Buttons */
-        .button-pulse {
-            margin-top: 30px;
-            padding: 15px 40px;
-            background: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-            border-radius: 50px;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: 0.3s;
-            animation: pulse 2s infinite;
-        }
+        .pc-card h2 { font-family: 'Orbitron'; font-size: 1.2rem; margin-bottom: 10px; }
+        .pc-card ul { padding: 0; list-style: none; font-size: 0.9rem; color: #bbb; margin-bottom: 25px; }
+        .pc-card li { margin-bottom: 8px; display: flex; align-items: center; }
+        .pc-card li::before { content: '▹'; color: var(--primary); margin-right: 10px; }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 242, 255, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(0, 242, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 242, 255, 0); }
-        }
+        .price-tag { font-family: 'Orbitron'; color: var(--primary); font-size: 1.1rem; }
 
-        /* Modal / Form Styles */
+        /* Form Modal */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            background: rgba(5, 2, 10, 0.95);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 2000; opacity: 0; pointer-events: none; transition: 0.3s;
         }
-
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
 
         .modal-content {
-            background: var(--bg);
-            border: 1px solid var(--primary);
+            background: #150d21;
             padding: 40px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            position: relative;
-            box-shadow: 0 0 40px rgba(0, 242, 255, 0.1);
+            border-radius: 20px;
+            width: 90%; max-width: 500px;
+            border: 1px solid var(--primary);
         }
 
-        .close-btn {
-            position: absolute;
-            top: 15px; right: 20px;
-            background: none; border: none;
-            color: white; font-size: 1.5rem;
-            cursor: pointer;
+        input, textarea, select {
+            width: 100%; padding: 12px; margin: 10px 0;
+            background: #231836; border: 1px solid rgba(168, 85, 247, 0.3);
+            color: white; border-radius: 8px; font-family: inherit;
         }
 
-        .modal-content h2 {
-            font-family: 'Orbitron';
-            color: var(--primary);
-            margin-top: 0;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-            color: #aaa;
-        }
-
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            border-radius: 5px;
-            font-family: 'Inter', sans-serif;
-            box-sizing: border-box;
-        }
-
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            background: var(--primary);
-            color: var(--bg);
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            font-family: 'Orbitron';
-            cursor: pointer;
+        .btn {
+            background: var(--primary); color: white; border: none;
+            padding: 15px 30px; border-radius: 12px; cursor: pointer;
+            font-family: 'Orbitron'; font-weight: bold; width: 100%;
             transition: 0.3s;
         }
+        .btn:hover { filter: brightness(1.2); box-shadow: 0 0 20px var(--primary); }
 
-        .submit-btn:hover {
-            background: white;
-            box-shadow: 0 0 15px var(--primary);
+        .tag {
+            font-size: 0.7rem; background: rgba(168, 85, 247, 0.2);
+            color: var(--primary); padding: 4px 10px; border-radius: 20px;
+            display: inline-block; margin-bottom: 10px; font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <div class="neon-mesh"></div>
+    <div class="ambient-glow"></div>
+
+    <nav>
+        <div class="logo">MONARA</div>
+        <div style="font-size: 0.8rem; letter-spacing: 1px;">PREMIUM HARDWARE</div>
+    </nav>
 
     <header>
-        <h1 class="glitch-title" data-aos="zoom-in">Monara Tech</h1>
-        <p data-aos="fade-up" data-aos-delay="300">Custom Built. Performance Driven.</p>
-        <button class="button-pulse" onclick="openModal('General Config')">Configure Your Rig</button>
+        <h1 data-aos="zoom-out">FORGED IN POWER</h1>
+        <p data-aos="fade-up" style="max-width: 600px; color: #aaa;">Expertly curated PC configurations for professionals, gamers, and enthusiasts. Your vision, our craft.</p>
     </header>
 
-    <div class="container">
-        <div class="pc-card" data-aos="fade-right" onclick="openModal('The Titan')">
-            <h2>The Titan</h2>
-            <p>RTX 5090 | 128GB DDR5</p>
-            <p>Built for the creators of tomorrow.</p>
-        </div>
-        <div class="pc-card" data-aos="fade-up" data-aos-delay="200" onclick="openModal('The Ghost')">
-            <h2>The Ghost</h2>
-            <p>Whiteout Aesthetic | Liquid Cooled</p>
-            <p>Silence meets absolute power.</p>
-        </div>
-        <div class="pc-card" data-aos="fade-left" data-aos-delay="400" onclick="openModal('The Edge')">
-            <h2>The Edge</h2>
-            <p>Small Form Factor | Mini-ITX</p>
-            <p>Maximum power in a minimal footprint.</p>
-        </div>
-    </div>
+    <h2 class="section-title" data-aos="fade-up">SELECT YOUR PURPOSE</h2>
 
-    <div class="modal-overlay" id="formModal">
+    <div class="container" id="pc-grid">
+        </div>
+
+    <div class="modal-overlay" id="orderModal">
         <div class="modal-content">
-            <button class="close-btn" onclick="closeModal()">&times;</button>
-            <h2>Request a Build</h2>
-            <form id="buildForm">
-                <div class="form-group">
-                    <label>Discord Tag or Email</label>
-                    <input type="text" id="contact" required placeholder="User#1234 or email@domain.com">
-                </div>
-                <div class="form-group">
-                    <label>Base Model</label>
-                    <input type="text" id="modelSelect" readonly>
-                </div>
-                <div class="form-group">
-                    <label>Estimated Budget (USD)</label>
-                    <input type="text" id="budget" required placeholder="$3000">
-                </div>
-                <div class="form-group">
-                    <label>Specific Requests / Use Case</label>
-                    <textarea id="notes" rows="4" placeholder="Streaming, 4K gaming, specific case color..."></textarea>
-                </div>
-                <button type="submit" class="submit-btn" id="submitBtn">Send to Monara Tech</button>
+            <h2 id="modalTitle" style="font-family: 'Orbitron'; color: var(--primary);">Request Build</h2>
+            <p id="modalSpecs" style="font-size: 0.8rem; color: #888; margin-bottom: 20px;"></p>
+            <form id="orderForm">
+                <input type="text" id="custName" placeholder="Your Name / Discord" required>
+                <input type="email" id="custEmail" placeholder="Email Address" required>
+                <textarea id="custNotes" placeholder="Any specific case preferences or extra storage needs?" rows="4"></textarea>
+                <button type="submit" class="btn" id="submitBtn">SEND REQUEST</button>
+                <button type="button" onclick="closeModal()" style="background:none; border:none; color:#666; width:100%; margin-top:10px; cursor:pointer;">Cancel</button>
             </form>
         </div>
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Initialize Scroll Animations
-        AOS.init({ duration: 1000, once: true });
+        AOS.init({ duration: 800, once: true });
 
-        // --- WEBHOOK CONFIGURATION ---
-        // PASTE YOUR DISCORD WEBHOOK URL IN THE QUOTES BELOW
-        const DISCORD_WEBHOOK_URL = "YOUR_DISCORD_WEBHOOK_URL_HERE";
+        // REPLACE THIS WITH YOUR ACTUAL WEBHOOK
+        const DISCORD_WEBHOOK = "YOUR_DISCORD_WEBHOOK_URL_HERE";
 
-        // Modal Logic
-        const modal = document.getElementById('formModal');
-        const modelInput = document.getElementById('modelSelect');
+        const builds = [
+            {
+                name: "Workstation Pro",
+                tag: "3D MODELING & RENDER",
+                specs: ["Ryzen 9 7950X", "RTX 4090 24GB", "64GB DDR5 6000MHz", "4TB Gen5 NVMe"],
+                price: "Starts at $4,200"
+            },
+            {
+                name: "Virtual Reality",
+                tag: "ULTRA VR READY",
+                specs: ["Core i7-14700K", "RTX 4080 Super", "32GB DDR5 RAM", "Quiet Liquid Cooling"],
+                price: "Starts at $2,800"
+            },
+            {
+                name: "Elite Gaming",
+                tag: "1440P / 4K MASTER",
+                specs: ["Ryzen 7 7800X3D", "RTX 4070 Ti Super", "32GB RAM", "Premium RGB Air Flow"],
+                price: "Starts at $2,100"
+            },
+            {
+                name: "Streamer Rig",
+                tag: "DUAL-ENCODE READY",
+                specs: ["Core i7-14700K", "RTX 4070 Super", "32GB RAM", "Elgato Capture Ready"],
+                price: "Starts at $1,950"
+            },
+            {
+                name: "The Living Room",
+                tag: "CONSOLE KILLER (SFF)",
+                specs: ["Ryzen 5 7600", "RTX 4060 Ti", "ITX Form Factor", "Ultra-Silent Profile"],
+                price: "Starts at $1,300"
+            },
+            {
+                name: "The Entry",
+                tag: "BUDGET PERFORMANCE",
+                specs: ["Ryzen 5 5600", "RX 6700 XT", "16GB DDR4", "High-Value Mesh Case"],
+                price: "Starts at $850"
+            }
+        ];
 
-        function openModal(modelName) {
-            modelInput.value = modelName;
+        // Inject Cards
+        const grid = document.getElementById('pc-grid');
+        builds.forEach((pc, index) => {
+            grid.innerHTML += `
+                <div class="pc-card" data-aos="fade-up" data-aos-delay="${index * 100}">
+                    <div>
+                        <span class="tag">${pc.tag}</span>
+                        <h2>${pc.name}</h2>
+                        <ul>${pc.specs.map(s => `<li>${s}</li>`).join('')}</ul>
+                    </div>
+                    <div>
+                        <div class="price-tag">${pc.price}</div>
+                        <button class="btn" style="margin-top:20px" onclick="openModal('${pc.name}', '${pc.specs.join(', ')}')">CONFIGURE</button>
+                    </div>
+                </div>
+            `;
+        });
+
+        const modal = document.getElementById('orderModal');
+        let activeModel = "";
+        let activeSpecs = "";
+
+        function openModal(name, specs) {
+            activeModel = name;
+            activeSpecs = specs;
+            document.getElementById('modalTitle').innerText = name;
+            document.getElementById('modalSpecs').innerText = "Includes: " + specs;
             modal.classList.add('active');
         }
 
-        function closeModal() {
-            modal.classList.remove('active');
-            document.getElementById('buildForm').reset();
-        }
+        function closeModal() { modal.classList.remove('active'); }
 
-        // Close modal if user clicks outside the box
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
-
-        // Form Submission Logic
-        document.getElementById('buildForm').addEventListener('submit', async (e) => {
-            e.preventDefault(); // Prevents page reload
-
+        document.getElementById('orderForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
             const btn = document.getElementById('submitBtn');
-            btn.textContent = "Sending...";
-            btn.disabled = true;
-
-            // Gather Data
-            const contact = document.getElementById('contact').value;
-            const model = document.getElementById('modelSelect').value;
-            const budget = document.getElementById('budget').value;
-            const notes = document.getElementById('notes').value || "None provided.";
-
-            // Construct Discord Embed Payload
+            btn.innerText = "SENDING...";
+            
             const payload = {
-                username: "Monara Tech Website",
-                avatar_url: "https://i.imgur.com/4M34hi2.png", // Optional avatar
-                content: "🚀 **New Build Request Received!**",
                 embeds: [{
-                    title: `Build Configuration: ${model}`,
-                    color: 62255, // Decimal color for Cyan
+                    title: `⚡ NEW BUILD REQUEST: ${activeModel}`,
+                    color: 11032055, // Purple
                     fields: [
-                        { name: "Contact", value: contact, inline: true },
-                        { name: "Budget", value: budget, inline: true },
-                        { name: "Notes & Requests", value: notes }
+                        { name: "Client", value: document.getElementById('custName').value, inline: true },
+                        { name: "Email", value: document.getElementById('custEmail').value, inline: true },
+                        { name: "Base Specs", value: activeSpecs },
+                        { name: "Custom Notes", value: document.getElementById('custNotes').value || "None" }
                     ],
-                    timestamp: new Date().toISOString()
+                    footer: { text: "Monara Tech Lead Gen" },
+                    timestamp: new Date()
                 }]
             };
 
-            // Send via Fetch API
             try {
-                const response = await fetch(DISCORD_WEBHOOK_URL, {
+                await fetch(DISCORD_WEBHOOK, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-
-                if (response.ok) {
-                    alert("Build request sent successfully! We will contact you soon.");
-                    closeModal();
-                } else {
-                    throw new Error('Network response was not ok');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert("Failed to send request. Please check your Webhook URL or try again later.");
-            } finally {
-                btn.textContent = "Send to Monara Tech";
-                btn.disabled = false;
+                alert("Request Sent! Monara Tech will be in touch.");
+                closeModal();
+            } catch (err) {
+                alert("Error sending request. Check your Webhook URL.");
             }
+            btn.innerText = "SEND REQUEST";
         });
     </script>
 </body>
