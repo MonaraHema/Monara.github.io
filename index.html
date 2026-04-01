@@ -114,7 +114,7 @@
         .config-total { font-family: 'Bebas Neue'; font-size: 4rem; color: var(--primary); margin: 20px 0; }
         
         .option-group { margin-bottom: 40px; }
-        .option-group h4 { font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .option-group h4 { font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; text-transform: uppercase; }
         
         .upgrade-card {
             display: flex; justify-content: space-between; align-items: center;
@@ -127,10 +127,18 @@
         .upgrade-name { font-weight: bold; }
         .upgrade-price { color: var(--primary); font-weight: 800; }
 
-        input[type="text"], input[type="email"], textarea {
+        /* Form Inputs */
+        input[type="text"], input[type="email"], input[type="tel"], select, textarea {
             width: 100%; padding: 14px; margin: 10px 0; box-sizing: border-box;
             background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
-            color: white; border-radius: 4px; font-family: inherit;
+            color: white; border-radius: 4px; font-family: inherit; font-size: 1rem;
+        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
+        .input-row { display: flex; gap: 15px; }
+        .input-row > * { flex: 1; }
+        
+        @media (max-width: 768px) {
+            .input-row { flex-direction: column; gap: 0; }
         }
     </style>
 </head>
@@ -173,9 +181,23 @@
                 </div>
 
             <h2 style="font-family: 'Bebas Neue'; font-size: 2.5rem; margin-top: 40px;">2. CLIENT DETAILS</h2>
-            <input type="text" id="custName" placeholder="Full Name / Discord Tag" required>
-            <input type="email" id="custEmail" placeholder="Email Address" required>
-            <textarea id="custNotes" placeholder="Any specific case colours, lighting themes, or aesthetic requests?" rows="4"></textarea>
+            
+            <div class="input-row">
+                <input type="text" id="custName" placeholder="Full Name / Discord Tag" required>
+                <select id="custPref">
+                    <option value="" disabled selected>Preferred Method of Contact...</option>
+                    <option value="Email">Email</option>
+                    <option value="SMS">SMS (Text Message)</option>
+                    <option value="Phone Call">Phone Call</option>
+                </select>
+            </div>
+            
+            <div class="input-row">
+                <input type="email" id="custEmail" placeholder="Email Address" required>
+                <input type="tel" id="custPhone" placeholder="Phone Number (Optional)">
+            </div>
+
+            <textarea id="custNotes" placeholder="Any specific case colours, lighting themes, aesthetic requests, or questions?" rows="4"></textarea>
             
             <button class="btn" id="submitBuildBtn" style="width: 100%; margin-top: 20px; font-size: 1.2rem; padding: 20px;">SUBMIT BUILD REQUEST TO MONARA</button>
         </div>
@@ -372,19 +394,27 @@
                 }
             },
             "custom": {
-                name: "Fully Custom Build",
-                desc: "You dream it, we build it. Select your preferred tier and leave detailed notes below.",
+                name: "Fully Custom Consultation",
+                desc: "You dream it, we engineer it. Fill out your parameters below and our build team will contact you to design a bespoke blueprint.",
                 tag: "100% BESPOKE",
                 basePrice: 0,
                 options: {
-                    tier: [
-                        { name: "Enthusiast Tier (Budget: £1,500 - £2,500)", price: 0 },
-                        { name: "Extreme Tier (Budget: £2,500 - £4,000)", price: 0 },
-                        { name: "God Tier (Budget: £4,000+)", price: 0 }
+                    estimated_budget: [
+                        { name: "£1,000 - £1,500 (Entry to Mid-Range)", price: 0 },
+                        { name: "£1,500 - £2,500 (High-End System)", price: 0 },
+                        { name: "£2,500 - £4,000 (Enthusiast Class)", price: 0 },
+                        { name: "£4,000+ (Zero Compromises)", price: 0 }
                     ],
-                    cooling: [
-                        { name: "Standard AIO Liquid Cooling", price: 0 },
-                        { name: "Custom Rigid Tube Watercooling Loop", price: 800 }
+                    primary_use_case: [
+                        { name: "Pure Gaming (Maximum FPS)", price: 0 },
+                        { name: "Gaming & Streaming Together", price: 0 },
+                        { name: "3D Modelling / Heavy Productivity", price: 0 },
+                        { name: "General / Mixed Use", price: 0 }
+                    ],
+                    preferred_size: [
+                        { name: "Standard Mid-Tower (Best for Cooling)", price: 0 },
+                        { name: "Small Form Factor (Mini-ITX / Compact)", price: 0 },
+                        { name: "Massive Full-Tower (Maximum Hardware)", price: 0 }
                     ]
                 }
             }
@@ -423,14 +453,18 @@
 
             // Generate UI for Options
             Object.keys(build.options).forEach(category => {
-                const title = category.toUpperCase();
+                const title = category.replace(/_/g, ' ').toUpperCase();
                 let html = `<div class="option-group"><h4>${title}</h4>`;
                 
                 build.options[category].forEach((opt, index) => {
                     if(index === 0) currentSelections[category] = opt; // Default to first option
                     const isChecked = index === 0 ? 'checked' : '';
                     const selectedClass = index === 0 ? 'selected' : '';
-                    const priceText = opt.price === 0 ? 'Included' : `+£${opt.price.toLocaleString()}`;
+                    let priceText = "";
+                    
+                    if (currentBuildKey !== 'custom') {
+                        priceText = opt.price === 0 ? 'Included' : `+£${opt.price.toLocaleString()}`;
+                    }
 
                     html += `
                         <label class="upgrade-card ${selectedClass}" id="card-${category}-${index}">
@@ -469,7 +503,7 @@
         function recalculateTotal() {
             let total = catalog[currentBuildKey].basePrice;
             Object.values(currentSelections).forEach(opt => { total += opt.price; });
-            document.getElementById('config-total-price').innerText = currentBuildKey === 'custom' ? 'TBA' : `£${total.toLocaleString()}`;
+            document.getElementById('config-total-price').innerText = currentBuildKey === 'custom' ? 'To Be Quoted' : `£${total.toLocaleString()}`;
         }
 
         // --- DISCORD WEBHOOK LOGIC ---
@@ -478,6 +512,8 @@
         document.getElementById('submitBuildBtn').addEventListener('click', async () => {
             const name = document.getElementById('custName').value;
             const email = document.getElementById('custEmail').value;
+            const phone = document.getElementById('custPhone').value || "None Provided";
+            const pref = document.getElementById('custPref').value || "Email";
             const notes = document.getElementById('custNotes').value || "None";
 
             if(!name || !email) return alert("Please fill out your Name and Email so we can contact you.");
@@ -488,22 +524,23 @@
             let hardwareList = "";
             let total = catalog[currentBuildKey].basePrice;
             Object.keys(currentSelections).forEach(cat => {
-                hardwareList += `**${cat.toUpperCase()}:** ${currentSelections[cat].name}\n`;
+                const label = cat.replace(/_/g, ' ').toUpperCase();
+                hardwareList += `**${label}:** ${currentSelections[cat].name}\n`;
                 total += currentSelections[cat].price;
             });
 
-            const totalString = currentBuildKey === 'custom' ? 'To Be Quoted' : `£${total.toLocaleString()}`;
+            const totalString = currentBuildKey === 'custom' ? 'Bespoke Quote Requested' : `£${total.toLocaleString()}`;
 
             const payload = {
                 embeds: [{
-                    title: `🛒 NEW UK ORDER: ${catalog[currentBuildKey].name}`,
+                    title: `🛒 NEW UK INQUIRY: ${catalog[currentBuildKey].name}`,
                     color: 10309341,
                     fields: [
-                        { name: "Client", value: name, inline: true },
-                        { name: "Email", value: email, inline: true },
-                        { name: "Total Estimate", value: totalString, inline: true },
-                        { name: "Hardware Selection", value: hardwareList },
-                        { name: "Client Notes", value: notes }
+                        { name: "Client Name", value: name, inline: true },
+                        { name: "Contact Info", value: `📧 ${email}\n📞 ${phone}\n💬 Prefers: **${pref}**`, inline: true },
+                        { name: "Total Estimate", value: totalString, inline: false },
+                        { name: "Selected Configuration", value: hardwareList },
+                        { name: "Client Notes & Questions", value: notes }
                     ],
                     timestamp: new Date()
                 }]
@@ -511,7 +548,7 @@
 
             try {
                 await fetch(DISCORD_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                alert("Order successfully transmitted! The Monara UK team will contact you shortly.");
+                alert("Request successfully transmitted! The Monara UK team will contact you shortly via your preferred method.");
                 closeConfigurator();
             } catch (err) { alert("Error connecting. Please try again."); } 
             finally { btn.innerText = "SUBMIT BUILD REQUEST TO MONARA"; btn.disabled = false; }
