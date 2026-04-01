@@ -4,330 +4,339 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monara Tech | Premium Custom Systems</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Plus+Jakarta+Sans:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #a855f7; 
-            --accent: #d8b4fe;  
-            --bg: #0b0612;      
-            --card-bg: rgba(30, 20, 50, 0.4);
+            --primary: #9d4edd; /* Deep vibrant purple */
+            --primary-hover: #7b2cbf;
+            --bg: #030008;      /* Pitch dark purple/black */
+            --surface: #0f0a18; /* Slightly lighter for cards */
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
         }
 
         body {
             margin: 0;
             background-color: var(--bg);
-            color: #ececec;
+            color: var(--text-main);
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
-            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .ambient-glow {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(168, 85, 247, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(124, 58, 237, 0.1) 0%, transparent 40%);
-            z-index: -1;
-        }
-
+        /* Clean Navbar */
         nav {
-            padding: 1.5rem 10%;
+            padding: 1.2rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(11, 6, 18, 0.8);
-            backdrop-filter: blur(15px);
+            background: rgba(3, 0, 8, 0.9);
+            backdrop-filter: blur(20px);
             position: fixed;
-            width: 80%;
+            width: 90%;
             top: 0; z-index: 1000;
-            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            color: var(--primary);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
             letter-spacing: 2px;
-            font-size: 1.4rem;
+            color: var(--text-main);
+            text-decoration: none;
         }
+        .logo span { color: var(--primary); }
 
-        header {
+        /* NZXT-Style Hero Section */
+        .hero {
             height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            text-align: center;
-            padding: 0 20px;
-        }
-
-        header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            background: linear-gradient(to bottom, #fff, var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-        }
-
-        .section-title {
-            text-align: center;
-            font-family: 'Orbitron';
-            color: var(--primary);
-            margin-top: 5rem;
-            font-size: 2rem;
-        }
-
-        .container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 25px;
-            padding: 50px 10%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .pc-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(168, 85, 247, 0.1);
-            padding: 35px;
-            border-radius: 24px;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+            padding: 0 10%;
+            background: radial-gradient(circle at 80% 50%, rgba(157, 78, 221, 0.15) 0%, transparent 50%);
             position: relative;
+        }
+        
+        .hero-content { max-width: 600px; z-index: 2; }
+
+        .hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 8vw, 7rem);
+            line-height: 0.9;
+            margin: 0 0 1rem 0;
+            text-transform: uppercase;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        /* Retail Buttons */
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 4px; /* Sharper corners for modern tech look */
+            cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+        .btn:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--text-main);
+            margin-left: 15px;
+        }
+        .btn-outline:hover { background: var(--text-main); color: var(--bg); }
+
+        /* Dedicated Feature Banner (The Starter PC) */
+        .feature-banner {
+            background: linear-gradient(135deg, #1a0b2e 0%, #0f0a18 100%);
+            border-top: 1px solid rgba(157, 78, 221, 0.3);
+            border-bottom: 1px solid rgba(157, 78, 221, 0.3);
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 0;
+            margin-top: 2rem;
         }
 
-        .pc-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            background: rgba(40, 25, 70, 0.6);
-            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2);
+        .feature-text {
+            flex: 1;
+            padding: 6rem 5% 6rem 10%;
+            min-width: 300px;
         }
 
-        .pc-card h2 { font-family: 'Orbitron'; font-size: 1.4rem; margin-bottom: 5px; color: #fff;}
-        .pc-card ul { padding: 0; list-style: none; font-size: 0.85rem; color: #ccc; margin-bottom: 25px; }
-        .pc-card li { margin-bottom: 10px; display: flex; align-items: flex-start; }
-        .pc-card li::before { content: '▹'; color: var(--primary); margin-right: 10px; font-weight: bold;}
+        .feature-image-placeholder {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(157, 78, 221, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-left: 1px solid rgba(255,255,255,0.05);
+            font-family: 'Bebas Neue';
+            font-size: 2rem;
+            color: rgba(255,255,255,0.2);
+            min-height: 400px;
+        }
 
-        .price-tag { font-family: 'Orbitron'; color: var(--primary); font-size: 1.2rem; margin-bottom: 15px; }
+        .badge-container { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .fps-badge {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .fps-badge span { color: var(--primary); }
 
-        .tag {
-            font-size: 0.75rem; background: rgba(168, 85, 247, 0.2);
-            color: #d8b4fe; padding: 6px 12px; border-radius: 20px;
-            display: inline-block; margin-bottom: 15px; font-weight: bold;
+        /* Retail Grid */
+        .section-header {
+            padding: 6rem 10% 2rem 10%;
+        }
+        .section-header h2 {
+            font-family: 'Bebas Neue';
+            font-size: 3.5rem;
+            margin: 0;
             letter-spacing: 1px;
         }
 
-        .btn {
-            background: var(--primary); color: white; border: none;
-            padding: 15px 30px; border-radius: 12px; cursor: pointer;
-            font-family: 'Orbitron'; font-weight: bold; width: 100%;
-            transition: 0.3s;
-            text-transform: uppercase;
-        }
-        .btn:hover { background: #9333ea; box-shadow: 0 0 15px rgba(168, 85, 247, 0.5); }
-
-        .custom-cta {
-            background: linear-gradient(135deg, rgba(30, 20, 50, 0.8), rgba(15, 10, 25, 0.9));
-            border: 1px solid var(--primary);
-            margin: 2rem 10%;
-            padding: 4rem 2rem;
-            border-radius: 24px;
-            text-align: center;
-        }
-
-        .gallery-grid {
+        .retail-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            padding: 20px 10% 80px 10%;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            padding: 0 10% 6rem 10%;
         }
 
-        .gallery-placeholder {
-            background: rgba(255, 255, 255, 0.03);
-            border: 2px dashed rgba(168, 85, 247, 0.4);
-            height: 250px;
-            border-radius: 16px;
+        .retail-card {
+            background: var(--surface);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            font-family: 'Orbitron';
-            font-size: 0.9rem;
-            transition: 0.3s;
+            flex-direction: column;
         }
-        .gallery-placeholder:hover { border-color: var(--primary); color: var(--primary); }
 
-        /* Footer Styles */
+        .retail-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .retail-card-img {
+            height: 200px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            display: flex; align-items: center; justify-content: center;
+            color: #444; font-size: 0.9rem; font-weight: bold; text-transform: uppercase;
+        }
+
+        .retail-card h3 { font-size: 1.5rem; margin: 0 0 0.5rem 0; }
+        .retail-card .subtitle { color: var(--primary); font-weight: 700; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 1.5rem; text-transform: uppercase; }
+        
+        .spec-list { list-style: none; padding: 0; margin: 0 0 2rem 0; flex-grow: 1; }
+        .spec-list li {
+            font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.8rem;
+            display: flex; align-items: flex-start;
+        }
+        .spec-list li::before { content: '■'; color: var(--primary); margin-right: 12px; font-size: 0.6rem; margin-top: 4px; }
+
+        .price { font-size: 1.5rem; font-weight: 800; margin-bottom: 1.5rem; }
+
+        /* Footer & Modals (Restyled to match) */
         footer {
-            background: rgba(5, 2, 10, 0.9);
-            border-top: 1px solid rgba(168, 85, 247, 0.2);
-            padding: 60px 10% 20px 10%;
-            font-size: 0.9rem;
+            background: #000; border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 4rem 10% 2rem 10%; font-size: 0.9rem;
         }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px; }
+        .footer-col h4 { font-family: 'Bebas Neue'; font-size: 1.5rem; letter-spacing: 1px; margin-bottom: 1.2rem; color: #fff; }
+        .footer-col ul { list-style: none; padding: 0; margin: 0; }
+        .footer-col li { margin-bottom: 0.8rem; }
+        .footer-col a { color: var(--text-muted); text-decoration: none; transition: 0.2s; cursor: pointer;}
+        .footer-col a:hover { color: var(--primary); }
 
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-col h3 {
-            font-family: 'Orbitron';
-            color: var(--primary);
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-        }
-
-        .footer-col ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .footer-col li {
-            margin-bottom: 10px;
-        }
-
-        .footer-col a {
-            color: #ccc;
-            text-decoration: none;
-            transition: 0.3s;
-            cursor: pointer;
-        }
-
-        .footer-col a:hover {
-            color: var(--primary);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding-top: 20px;
-            color: #666;
-            font-size: 0.8rem;
-        }
-
-        /* Modals */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 2, 10, 0.95);
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
             display: flex; justify-content: center; align-items: center;
             z-index: 2000; opacity: 0; pointer-events: none; transition: 0.3s;
         }
         .modal-overlay.active { opacity: 1; pointer-events: all; }
-
         .modal-content {
-            background: #150d21; padding: 40px; border-radius: 20px;
-            width: 90%; max-width: 500px; border: 1px solid var(--primary);
-            max-height: 80vh; overflow-y: auto;
+            background: var(--surface); padding: 3rem; border-radius: 8px;
+            width: 90%; max-width: 500px; border: 1px solid rgba(255,255,255,0.1);
         }
-
-        .modal-content::-webkit-scrollbar { width: 8px; }
-        .modal-content::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
-
+        .modal-content h2 { font-family: 'Bebas Neue'; font-size: 2.5rem; margin: 0 0 0.5rem 0; }
         input, textarea {
-            width: 100%; padding: 12px; margin: 10px 0; box-sizing: border-box;
-            background: #231836; border: 1px solid rgba(168, 85, 247, 0.3);
-            color: white; border-radius: 8px; font-family: inherit;
+            width: 100%; padding: 14px; margin: 10px 0; box-sizing: border-box;
+            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
+            color: white; border-radius: 4px; font-family: inherit; font-size: 1rem;
         }
-        
-        .legal-text h4 { color: #fff; margin-top: 20px; }
-        .legal-text p { color: #aaa; font-size: 0.9rem; }
+        input:focus, textarea:focus { outline: none; border-color: var(--primary); }
     </style>
 </head>
 <body>
 
-    <div class="ambient-glow"></div>
-
     <nav>
-        <div class="logo">MONARA</div>
-        <div style="font-size: 0.8rem; letter-spacing: 1px; color: #aaa;">SYSTEM INTEGRATION</div>
+        <a href="#" class="logo">MONARA<span>TECH</span></a>
+        <div>
+            <a href="#prebuilds" style="color: white; text-decoration: none; font-weight: 700; font-size: 0.9rem; margin-right: 20px;">SYSTEMS</a>
+            <button class="btn" style="padding: 10px 20px; font-size: 0.85rem;" onclick="openModal('Fully Custom Request', 'Client requires 100% custom blueprint.')">CUSTOM BUILD</button>
+        </div>
     </nav>
 
-    <header>
-        <h1 data-aos="zoom-out">FORGED IN POWER</h1>
-        <p data-aos="fade-up" style="max-width: 600px; color: #aaa; font-size: 1.1rem;">Expertly curated PC configurations for professionals, gamers, and enthusiasts. From elite workstations to the perfect first gaming PC.</p>
-    </header>
+    <section class="hero">
+        <div class="hero-content" data-aos="fade-up">
+            <h1>Engineered for<br>Absolute Dominance.</h1>
+            <p>Hand-crafted, stress-tested, and built with obsessive attention to detail. Experience the pinnacle of custom PC gaming and professional workstations.</p>
+            <a href="#prebuilds" class="btn">Shop Systems</a>
+            <button class="btn btn-outline" onclick="openModal('Fully Custom Request', 'Client requires 100% custom blueprint.')">Build Your Own</button>
+        </div>
+    </section>
 
-    <h2 class="section-title" data-aos="fade-up">CURATED SYSTEMS</h2>
-    <div class="container" id="pc-grid">
+    <section class="feature-banner" data-aos="fade-in">
+        <div class="feature-text">
+            <h2 style="font-family: 'Bebas Neue'; font-size: 4rem; margin: 0; line-height: 1;">THE STARTER PACK</h2>
+            <p style="color: var(--primary); font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-top: 0.5rem;">The Perfect First Gaming PC</p>
+            
+            <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem; max-width: 450px;">
+                Designed specifically for smooth, tear-free performance in competitive titles. Built with reliable components, built-in Wi-Fi, and stunning RGB aesthetics. Plug in and play instantly.
+            </p>
+
+            <div class="badge-container">
+                <div class="fps-badge">FORTNITE <span>144+ FPS</span></div>
+                <div class="fps-badge">VALORANT <span>200+ FPS</span></div>
+                <div class="fps-badge">ROBLOX <span>MAX SETTINGS</span></div>
+                <div class="fps-badge">WIFI & BLUETOOTH <span>INCLUDED</span></div>
+            </div>
+
+            <h3 style="font-size: 2rem; margin: 1.5rem 0;">$899.99</h3>
+            <button class="btn" onclick="openModal('The Starter Pack', 'Ryzen 5 5600 | RTX 4060 | 16GB RAM | 1TB NVMe')">CONFIGURE & BUY</button>
+        </div>
+        <div class="feature-image-placeholder">
+            [ HERO PRODUCT IMAGE PLACEHOLDER ]
+        </div>
+    </section>
+
+    <section id="prebuilds">
+        <div class="section-header" data-aos="fade-up">
+            <h2>THE ARSENAL</h2>
+            <p style="color: var(--text-muted);">Select a base configuration to begin.</p>
         </div>
 
-    <div class="custom-cta" data-aos="zoom-in">
-        <h2 style="font-family: 'Orbitron'; font-size: 2.5rem; margin-top: 0; color: #fff;">Need Something 100% Unique?</h2>
-        <p style="color: #bbb; max-width: 600px; margin: 0 auto 2rem auto; font-size: 1.1rem;">Custom water-cooling loops, specific case themes, or specialized hardware. Tell us your vision, and we will engineer it from the ground up.</p>
-        <button class="btn" style="max-width: 300px;" onclick="openModal('Fully Custom Request', 'Client to specify all requirements in the notes below. Budget TBA.')">REQUEST CUSTOM BUILD</button>
-    </div>
-
-    <h2 class="section-title" data-aos="fade-up">RECENT BUILDS</h2>
-    <div class="gallery-grid" data-aos="fade-up">
-        <div class="gallery-placeholder">(Image Placeholder 1)</div>
-        <div class="gallery-placeholder">(Image Placeholder 2)</div>
-        <div class="gallery-placeholder">(Image Placeholder 3)</div>
-        <div class="gallery-placeholder">(Image Placeholder 4)</div>
-    </div>
+        <div class="retail-grid" id="pc-grid">
+            </div>
+    </section>
 
     <footer>
         <div class="footer-grid">
             <div class="footer-col">
-                <div class="logo" style="font-size: 1.2rem; margin-bottom: 15px;">MONARA TECH</div>
-                <p style="color: #888; font-size: 0.85rem;">Precision engineered custom desktop computers built for maximum performance, aesthetics, and reliability.</p>
+                <a href="#" class="logo" style="font-size: 1.5rem; margin-bottom: 15px; display: block;">MONARA<span>TECH</span></a>
+                <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6;">Precision engineered desktop systems built for performance, aesthetics, and unmatched reliability.</p>
             </div>
             <div class="footer-col">
-                <h3>Contact</h3>
+                <h4>Contact Us</h4>
                 <ul>
                     <li><a href="mailto:contact@monaratech.placeholder">contact@monaratech.placeholder</a></li>
                     <li><a href="tel:+15550198372">+1 (555) 019-8372</a></li>
-                    <li style="color: #666; margin-top: 10px;">Hours: Mon-Fri, 9AM - 6PM</li>
+                    <li style="color: #666; margin-top: 10px; font-size: 0.8rem;">Mon-Fri, 9AM - 6PM EST</li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h3>Socials</h3>
+                <h4>Community</h4>
                 <ul>
                     <li><a href="#discord-placeholder">Discord Server</a></li>
                     <li><a href="#instagram-placeholder">Instagram</a></li>
-                    <li><a href="#twitter-placeholder">Twitter / X</a></li>
+                    <li><a href="#twitter-placeholder">X (Twitter)</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h3>Legal</h3>
+                <h4>Legal</h4>
                 <ul>
                     <li><a onclick="openLegalModal('tos')">Terms of Service</a></li>
                     <li><a onclick="openLegalModal('disclaimer')">Disclaimers & Warranty</a></li>
                 </ul>
             </div>
         </div>
-        <div class="footer-bottom">
-            &copy; 2026 Monara Tech. All rights reserved. Not affiliated with any hardware manufacturer.
+        <div style="text-align: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 2rem; color: #555; font-size: 0.8rem;">
+            &copy; 2026 Monara Tech. All rights reserved. Prices subject to market availability.
         </div>
     </footer>
 
     <div class="modal-overlay" id="orderModal">
         <div class="modal-content">
-            <h2 id="modalTitle" style="font-family: 'Orbitron'; color: var(--primary); margin-top: 0;">Request Build</h2>
-            <p id="modalSpecs" style="font-size: 0.85rem; color: #aaa; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px;"></p>
+            <h2 id="modalTitle">REQUEST BUILD</h2>
+            <p id="modalSpecs" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 25px;"></p>
             <form id="orderForm">
                 <input type="text" id="custName" placeholder="Your Name / Discord Tag" required>
                 <input type="email" id="custEmail" placeholder="Email Address" required>
-                <textarea id="custNotes" placeholder="Any specific case preferences, aesthetic choices, or extra storage needs?" rows="4" required></textarea>
-                <button type="submit" class="btn" id="submitBtn">SEND REQUEST TO MONARA</button>
-                <button type="button" onclick="closeModal('orderModal')" style="background:none; border:none; color:#888; width:100%; margin-top:15px; cursor:pointer; font-family: 'Plus Jakarta Sans';">Cancel</button>
+                <textarea id="custNotes" placeholder="Any specific case colors, extra storage needs, or aesthetic requests?" rows="4" required></textarea>
+                <button type="submit" class="btn" id="submitBtn" style="width: 100%; margin-top: 10px;">SUBMIT TO BUILD TEAM</button>
+                <button type="button" onclick="closeModal('orderModal')" style="background:none; border:none; color:#888; width:100%; margin-top:15px; cursor:pointer; font-family: inherit; font-weight: bold;">CANCEL</button>
             </form>
         </div>
     </div>
 
     <div class="modal-overlay" id="legalModal">
-        <div class="modal-content legal-text">
-            <h2 id="legalTitle" style="font-family: 'Orbitron'; color: var(--primary); margin-top: 0;"></h2>
-            <div id="legalBody"></div>
-            <button class="btn" onclick="closeModal('legalModal')" style="margin-top: 20px;">Close Document</button>
+        <div class="modal-content">
+            <h2 id="legalTitle"></h2>
+            <div id="legalBody" style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; max-height: 50vh; overflow-y: auto; padding-right: 15px;"></div>
+            <button class="btn" onclick="closeModal('legalModal')" style="width: 100%; margin-top: 25px;">ACKNOWLEDGE & CLOSE</button>
         </div>
     </div>
 
@@ -342,46 +351,32 @@
                 name: "Workstation Pro",
                 tag: "3D MODELING & RENDER",
                 specs: [
-                    "CPU: AMD Ryzen 9 7950X (16-Core, 32-Thread)", 
-                    "GPU: NVIDIA GeForce RTX 4090 24GB GDDR6X", 
-                    "RAM: G.Skill Trident Z5 64GB (2x32GB) DDR5-6000 CL30", 
-                    "Storage: Samsung 990 PRO 4TB PCIe 4.0 NVMe M.2",
-                    "Cooling: 360mm Premium AIO Liquid Cooler"
+                    "AMD Ryzen 9 7950X", 
+                    "NVIDIA RTX 4090 24GB", 
+                    "64GB DDR5-6000 CL30", 
+                    "4TB PCIe 4.0 NVMe M.2"
                 ],
                 price: "$4,199.99"
             },
             {
-                name: "Virtual Reality Master",
+                name: "VR Master",
                 tag: "ULTRA VR READY",
                 specs: [
-                    "CPU: Intel Core i7-14700K (20-Core)", 
-                    "GPU: NVIDIA GeForce RTX 4080 SUPER 16GB", 
-                    "RAM: Corsair Vengeance 32GB DDR5-6000", 
-                    "Storage: WD_Black SN850X 2TB NVMe M.2",
-                    "Motherboard: Z790 Chipset with WiFi 7"
+                    "Intel Core i7-14700K", 
+                    "NVIDIA RTX 4080 SUPER 16GB", 
+                    "32GB DDR5-6000 RAM", 
+                    "2TB SN850X NVMe"
                 ],
                 price: "$2,749.99"
-            },
-            {
-                name: "The Starter Pack",
-                tag: "PERFECT FOR FORTNITE, ROBLOX & MINECRAFT",
-                specs: [
-                    "CPU: AMD Ryzen 5 5600 (Fast & Reliable)", 
-                    "GPU: NVIDIA RTX 4060 8GB (Smooth 1080p Gaming)", 
-                    "RAM: 16GB High-Speed DDR4 (Great for homework & games)", 
-                    "Storage: 1TB Fast NVMe SSD (Instant load times)",
-                    "Extras: Built-in Wi-Fi, Bluetooth, & Customizable RGB Lights"
-                ],
-                price: "$899.99"
             },
             {
                 name: "Elite Gaming",
                 tag: "1440P / 4K MASTER",
                 specs: [
-                    "CPU: AMD Ryzen 7 7800X3D (Best-in-class gaming)", 
-                    "GPU: NVIDIA GeForce RTX 4070 Ti SUPER 16GB", 
-                    "RAM: TeamGroup 32GB DDR5-6000 CL30", 
-                    "Case: High-Airflow Mesh Front with ARGB Fans"
+                    "AMD Ryzen 7 7800X3D", 
+                    "NVIDIA RTX 4070 Ti SUPER", 
+                    "32GB DDR5-6000 RAM", 
+                    "High-Airflow RGB Case"
                 ],
                 price: "$2,149.99"
             },
@@ -389,11 +384,10 @@
                 name: "Streamer Rig",
                 tag: "DUAL-ENCODE READY",
                 specs: [
-                    "CPU: Intel Core i5-13600K (14-Core)", 
-                    "GPU: NVIDIA RTX 4070 SUPER 12GB (AV1 Encoding)", 
-                    "RAM: 32GB DDR5 RAM", 
-                    "Storage: 2TB NVMe Gen4 SSD",
-                    "Motherboard: Heavy USB Connectivity for Peripherals"
+                    "Intel Core i5-13600K", 
+                    "NVIDIA RTX 4070 SUPER 12GB", 
+                    "32GB DDR5 RAM", 
+                    "2TB Gen4 NVMe SSD"
                 ],
                 price: "$1,899.99"
             },
@@ -401,10 +395,10 @@
                 name: "The Living Room",
                 tag: "CONSOLE KILLER (SFF)",
                 specs: [
-                    "CPU: AMD Ryzen 5 7600", 
-                    "GPU: NVIDIA RTX 4060 Ti 8GB", 
-                    "Form Factor: Mini-ITX (Fits beautifully under a TV)", 
-                    "Cooling: Low-Profile Noctua Air Cooler (Ultra-Silent)"
+                    "AMD Ryzen 5 7600", 
+                    "NVIDIA RTX 4060 Ti 8GB", 
+                    "Mini-ITX Form Factor", 
+                    "Ultra-Silent Air Cooling"
                 ],
                 price: "$1,349.99"
             }
@@ -414,29 +408,25 @@
         const grid = document.getElementById('pc-grid');
         builds.forEach((pc, index) => {
             grid.innerHTML += `
-                <div class="pc-card" data-aos="fade-up" data-aos-delay="${index * 50}">
-                    <div>
-                        <span class="tag">${pc.tag}</span>
-                        <h2>${pc.name}</h2>
-                        <ul>${pc.specs.map(s => `<li>${s}</li>`).join('')}</ul>
-                    </div>
-                    <div>
-                        <div class="price-tag">Est. ${pc.price}</div>
-                        <button class="btn" onclick="openModal('${pc.name}', '${pc.specs.join(' | ')}')">SELECT THIS BUILD</button>
-                    </div>
+                <div class="retail-card" data-aos="fade-up" data-aos-delay="${index * 50}">
+                    <div class="retail-card-img">[ IMAGE ]</div>
+                    <h3>${pc.name}</h3>
+                    <div class="subtitle">${pc.tag}</div>
+                    <ul class="spec-list">${pc.specs.map(s => `<li>${s}</li>`).join('')}</ul>
+                    <div class="price">${pc.price}</div>
+                    <button class="btn" style="width: 100%;" onclick="openModal('${pc.name}', '${pc.specs.join(' | ')}')">BUY NOW</button>
                 </div>
             `;
         });
 
-        // Modal Logic
         let activeModel = "";
         let activeSpecs = "";
 
         function openModal(name, specs) {
             activeModel = name;
             activeSpecs = specs;
-            document.getElementById('modalTitle').innerText = name;
-            document.getElementById('modalSpecs').innerText = "Includes: " + specs;
+            document.getElementById('modalTitle').innerText = name.toUpperCase();
+            document.getElementById('modalSpecs').innerText = "BASE SPEC: " + specs;
             document.getElementById('orderModal').classList.add('active');
         }
 
@@ -445,7 +435,6 @@
             if(id === 'orderModal') document.getElementById('orderForm').reset();
         }
 
-        // Webhook Submission Logic
         document.getElementById('orderForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
@@ -454,63 +443,34 @@
             
             const payload = {
                 embeds: [{
-                    title: `⚡ NEW BUILD INQUIRY: ${activeModel}`,
-                    color: 11032055,
+                    title: `⚡ NEW RETAIL INQUIRY: ${activeModel}`,
+                    color: 10309341, // NZXT-ish purple
                     fields: [
-                        { name: "Client Contact", value: document.getElementById('custName').value, inline: true },
-                        { name: "Email Address", value: document.getElementById('custEmail').value, inline: true },
-                        { name: "Base Specs / Request Type", value: activeSpecs },
-                        { name: "Client Notes & Custom Requests", value: document.getElementById('custNotes').value }
+                        { name: "Client", value: document.getElementById('custName').value, inline: true },
+                        { name: "Email", value: document.getElementById('custEmail').value, inline: true },
+                        { name: "Base Specs", value: activeSpecs },
+                        { name: "Client Notes", value: document.getElementById('custNotes').value }
                     ],
-                    footer: { text: "Monara Tech Automated System" },
                     timestamp: new Date()
                 }]
             };
 
             try {
-                await fetch(DISCORD_WEBHOOK, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                alert("Request successfully transmitted! Monara Tech will review your specs and reach out shortly.");
+                await fetch(DISCORD_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                alert("Order request transmitted! The Monara Team will contact you shortly.");
                 closeModal('orderModal');
-            } catch (err) {
-                alert("Error connecting to server. Please try again later.");
-                console.error(err);
-            } finally {
-                btn.innerText = "SEND REQUEST TO MONARA";
-                btn.disabled = false;
-            }
+            } catch (err) { alert("Error connecting to server. Please try again."); } 
+            finally { btn.innerText = "SUBMIT TO BUILD TEAM"; btn.disabled = false; }
         });
 
-        // Legal Modal Logic
         const legalTexts = {
             tos: {
-                title: "Terms of Service",
-                body: `
-                    <h4>1. Deposits and Payments</h4>
-                    <p>All custom PC builds require a non-refundable upfront deposit covering 100% of the hardware component costs. Labor fees and applicable shipping must be paid in full prior to the delivery or shipment of the completed system.</p>
-                    <h4>2. Build Timeline</h4>
-                    <p>Standard build times range from 7 to 14 business days from the receipt of all hardware parts. Delays resulting from shipping, part shortages, or out-of-stock items will be communicated promptly.</p>
-                    <h4>3. Cancellations</h4>
-                    <p>If a build is canceled by the client after components have been ordered, the hardware cost is non-refundable. The components will be shipped to the client unassembled.</p>
-                    <h4>4. Software & OS</h4>
-                    <p>Monara Tech will install Windows (unactivated) and necessary drivers for stress testing. It is the client's responsibility to purchase and activate legitimate software licenses unless explicitly invoiced.</p>
-                `
+                title: "TERMS OF SERVICE",
+                body: `<h4 style="color:#fff; margin-top:20px;">1. Deposits and Payments</h4><p>All custom builds require an upfront deposit covering 100% of hardware costs. Labor fees and shipping are due prior to delivery.</p><h4 style="color:#fff; margin-top:20px;">2. Build Timeline</h4><p>Standard builds require 7-14 business days from receipt of all parts.</p><h4 style="color:#fff; margin-top:20px;">3. Cancellations</h4><p>Once components are ordered, hardware costs are non-refundable. Components will be shipped unassembled if canceled.</p>`
             },
             disclaimer: {
-                title: "Disclaimers & Warranty",
-                body: `
-                    <h4>1. Market Pricing Volatility</h4>
-                    <p>The PC hardware market (specifically GPUs and DDR5 RAM) is highly volatile. The "Estimated Prices" shown on the website are baseline estimates. Final invoice pricing will reflect the exact market cost of components at the time of your formal quote.</p>
-                    <h4>2. Labor Warranty</h4>
-                    <p>Monara Tech provides a limited 1-Year Labor Warranty against assembly defects. This covers issues like loose cables, improper thermal paste application, or failing mounting brackets.</p>
-                    <h4>3. Manufacturer Warranty (Parts)</h4>
-                    <p>Individual hardware components (CPU, GPU, RAM, etc.) are covered by their respective manufacturer warranties. Monara Tech is not liable for hardware failure caused by manufacturer defects, but will assist the client in the RMA (Return Merchandise Authorization) process if a part fails within the first 30 days.</p>
-                    <h4>4. Overclocking & Damage</h4>
-                    <p>User-applied overclocking, physical damage, liquid damage, or unauthorized modifications to the system void the Monara Tech Labor Warranty entirely.</p>
-                `
+                title: "DISCLAIMERS & WARRANTY",
+                body: `<h4 style="color:#fff; margin-top:20px;">1. Pricing Volatility</h4><p>Hardware prices fluctuate. Estimated prices are baselines; final invoices reflect exact market costs at the time of quoting.</p><h4 style="color:#fff; margin-top:20px;">2. Labor Warranty</h4><p>Monara Tech provides a 1-Year Labor Warranty against assembly defects.</p><h4 style="color:#fff; margin-top:20px;">3. Manufacturer Warranty</h4><p>Components are covered by individual manufacturer warranties. Monara Tech assists with RMA processes within the first 30 days.</p>`
             }
         };
 
