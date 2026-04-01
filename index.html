@@ -132,7 +132,6 @@
         }
         .btn:hover { background: #9333ea; box-shadow: 0 0 15px rgba(168, 85, 247, 0.5); }
 
-        /* Custom Build CTA Section */
         .custom-cta {
             background: linear-gradient(135deg, rgba(30, 20, 50, 0.8), rgba(15, 10, 25, 0.9));
             border: 1px solid var(--primary);
@@ -142,7 +141,6 @@
             text-align: center;
         }
 
-        /* Gallery Section */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -165,7 +163,58 @@
         }
         .gallery-placeholder:hover { border-color: var(--primary); color: var(--primary); }
 
-        /* Modal */
+        /* Footer Styles */
+        footer {
+            background: rgba(5, 2, 10, 0.9);
+            border-top: 1px solid rgba(168, 85, 247, 0.2);
+            padding: 60px 10% 20px 10%;
+            font-size: 0.9rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            font-family: 'Orbitron';
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-col li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col a {
+            color: #ccc;
+            text-decoration: none;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .footer-col a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 20px;
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        /* Modals */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(5, 2, 10, 0.95);
@@ -177,13 +226,20 @@
         .modal-content {
             background: #150d21; padding: 40px; border-radius: 20px;
             width: 90%; max-width: 500px; border: 1px solid var(--primary);
+            max-height: 80vh; overflow-y: auto;
         }
+
+        .modal-content::-webkit-scrollbar { width: 8px; }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
 
         input, textarea {
             width: 100%; padding: 12px; margin: 10px 0; box-sizing: border-box;
             background: #231836; border: 1px solid rgba(168, 85, 247, 0.3);
             color: white; border-radius: 8px; font-family: inherit;
         }
+        
+        .legal-text h4 { color: #fff; margin-top: 20px; }
+        .legal-text p { color: #aaa; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -201,7 +257,6 @@
     </header>
 
     <h2 class="section-title" data-aos="fade-up">CURATED SYSTEMS</h2>
-
     <div class="container" id="pc-grid">
         </div>
 
@@ -219,6 +274,41 @@
         <div class="gallery-placeholder">(Image Placeholder 4)</div>
     </div>
 
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo" style="font-size: 1.2rem; margin-bottom: 15px;">MONARA TECH</div>
+                <p style="color: #888; font-size: 0.85rem;">Precision engineered custom desktop computers built for maximum performance, aesthetics, and reliability.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Contact</h3>
+                <ul>
+                    <li><a href="mailto:contact@monaratech.placeholder">contact@monaratech.placeholder</a></li>
+                    <li><a href="tel:+15550198372">+1 (555) 019-8372</a></li>
+                    <li style="color: #666; margin-top: 10px;">Hours: Mon-Fri, 9AM - 6PM</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Socials</h3>
+                <ul>
+                    <li><a href="#discord-placeholder">Discord Server</a></li>
+                    <li><a href="#instagram-placeholder">Instagram</a></li>
+                    <li><a href="#twitter-placeholder">Twitter / X</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a onclick="openLegalModal('tos')">Terms of Service</a></li>
+                    <li><a onclick="openLegalModal('disclaimer')">Disclaimers & Warranty</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Monara Tech. All rights reserved. Not affiliated with any hardware manufacturer.
+        </div>
+    </footer>
+
     <div class="modal-overlay" id="orderModal">
         <div class="modal-content">
             <h2 id="modalTitle" style="font-family: 'Orbitron'; color: var(--primary); margin-top: 0;">Request Build</h2>
@@ -228,8 +318,16 @@
                 <input type="email" id="custEmail" placeholder="Email Address" required>
                 <textarea id="custNotes" placeholder="Any specific case preferences, aesthetic choices, or extra storage needs?" rows="4" required></textarea>
                 <button type="submit" class="btn" id="submitBtn">SEND REQUEST TO MONARA</button>
-                <button type="button" onclick="closeModal()" style="background:none; border:none; color:#888; width:100%; margin-top:15px; cursor:pointer; font-family: 'Plus Jakarta Sans';">Cancel</button>
+                <button type="button" onclick="closeModal('orderModal')" style="background:none; border:none; color:#888; width:100%; margin-top:15px; cursor:pointer; font-family: 'Plus Jakarta Sans';">Cancel</button>
             </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="legalModal">
+        <div class="modal-content legal-text">
+            <h2 id="legalTitle" style="font-family: 'Orbitron'; color: var(--primary); margin-top: 0;"></h2>
+            <div id="legalBody"></div>
+            <button class="btn" onclick="closeModal('legalModal')" style="margin-top: 20px;">Close Document</button>
         </div>
     </div>
 
@@ -237,10 +335,8 @@
     <script>
         AOS.init({ duration: 800, once: true });
 
-        // YOUR LIVE DISCORD WEBHOOK
         const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1488697624134418496/bRHm4qAykI26W5tUQJi4SiIV8o1McJ937yXNe0CEvYr8Mo-vB4VB_0w58k6LNW1EMIr4";
 
-        // Extremely specific hardware lists for maximum professionalism
         const builds = [
             {
                 name: "Workstation Pro",
@@ -332,7 +428,7 @@
             `;
         });
 
-        const modal = document.getElementById('orderModal');
+        // Modal Logic
         let activeModel = "";
         let activeSpecs = "";
 
@@ -341,14 +437,15 @@
             activeSpecs = specs;
             document.getElementById('modalTitle').innerText = name;
             document.getElementById('modalSpecs').innerText = "Includes: " + specs;
-            modal.classList.add('active');
+            document.getElementById('orderModal').classList.add('active');
         }
 
-        function closeModal() { 
-            modal.classList.remove('active'); 
-            document.getElementById('orderForm').reset();
+        function closeModal(id) { 
+            document.getElementById(id).classList.remove('active'); 
+            if(id === 'orderModal') document.getElementById('orderForm').reset();
         }
 
+        // Webhook Submission Logic
         document.getElementById('orderForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
@@ -377,7 +474,7 @@
                     body: JSON.stringify(payload)
                 });
                 alert("Request successfully transmitted! Monara Tech will review your specs and reach out shortly.");
-                closeModal();
+                closeModal('orderModal');
             } catch (err) {
                 alert("Error connecting to server. Please try again later.");
                 console.error(err);
@@ -386,6 +483,42 @@
                 btn.disabled = false;
             }
         });
+
+        // Legal Modal Logic
+        const legalTexts = {
+            tos: {
+                title: "Terms of Service",
+                body: `
+                    <h4>1. Deposits and Payments</h4>
+                    <p>All custom PC builds require a non-refundable upfront deposit covering 100% of the hardware component costs. Labor fees and applicable shipping must be paid in full prior to the delivery or shipment of the completed system.</p>
+                    <h4>2. Build Timeline</h4>
+                    <p>Standard build times range from 7 to 14 business days from the receipt of all hardware parts. Delays resulting from shipping, part shortages, or out-of-stock items will be communicated promptly.</p>
+                    <h4>3. Cancellations</h4>
+                    <p>If a build is canceled by the client after components have been ordered, the hardware cost is non-refundable. The components will be shipped to the client unassembled.</p>
+                    <h4>4. Software & OS</h4>
+                    <p>Monara Tech will install Windows (unactivated) and necessary drivers for stress testing. It is the client's responsibility to purchase and activate legitimate software licenses unless explicitly invoiced.</p>
+                `
+            },
+            disclaimer: {
+                title: "Disclaimers & Warranty",
+                body: `
+                    <h4>1. Market Pricing Volatility</h4>
+                    <p>The PC hardware market (specifically GPUs and DDR5 RAM) is highly volatile. The "Estimated Prices" shown on the website are baseline estimates. Final invoice pricing will reflect the exact market cost of components at the time of your formal quote.</p>
+                    <h4>2. Labor Warranty</h4>
+                    <p>Monara Tech provides a limited 1-Year Labor Warranty against assembly defects. This covers issues like loose cables, improper thermal paste application, or failing mounting brackets.</p>
+                    <h4>3. Manufacturer Warranty (Parts)</h4>
+                    <p>Individual hardware components (CPU, GPU, RAM, etc.) are covered by their respective manufacturer warranties. Monara Tech is not liable for hardware failure caused by manufacturer defects, but will assist the client in the RMA (Return Merchandise Authorization) process if a part fails within the first 30 days.</p>
+                    <h4>4. Overclocking & Damage</h4>
+                    <p>User-applied overclocking, physical damage, liquid damage, or unauthorized modifications to the system void the Monara Tech Labor Warranty entirely.</p>
+                `
+            }
+        };
+
+        function openLegalModal(type) {
+            document.getElementById('legalTitle').innerText = legalTexts[type].title;
+            document.getElementById('legalBody').innerHTML = legalTexts[type].body;
+            document.getElementById('legalModal').classList.add('active');
+        }
     </script>
 </body>
 </html>
