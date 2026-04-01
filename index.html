@@ -128,7 +128,7 @@
         .upgrade-price { color: var(--primary); font-weight: 800; }
 
         /* Form Inputs */
-        input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+        input[type="text"], input[type="email"], input[type="tel"], input[type="number"], select, textarea {
             width: 100%; padding: 14px; margin: 10px 0; box-sizing: border-box;
             background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
             color: white; border-radius: 4px; font-family: inherit; font-size: 1rem;
@@ -139,6 +139,7 @@
         
         @media (max-width: 768px) {
             .input-row { flex-direction: column; gap: 0; }
+            #admin-split { flex-direction: column !important; }
         }
 
         /* --- ADMIN BOM PANEL --- */
@@ -186,22 +187,72 @@
     </div>
 
     <div id="admin-panel">
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--primary); padding-bottom: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 30px;">
             <div>
-                <h2 style="font-family: 'Bebas Neue'; font-size: 3.5rem; margin: 0; line-height: 1;">INTERNAL BOM INDEX</h2>
-                <p style="color: var(--text-muted); margin: 5px 0 0 0;">April 2026 Hardware Base Costs & Margins</p>
+                <h2 style="font-family: 'Bebas Neue'; font-size: 3.5rem; margin: 0; line-height: 1;">MONARA COMMAND CENTER</h2>
+                <p style="color: var(--text-muted); margin: 5px 0 0 0;">Dynamic Margin & Custom Quote Calculator</p>
             </div>
-            <button class="btn btn-outline" onclick="closeAdmin()">CLOSE ADMIN PANEL</button>
+            <button class="btn btn-outline" onclick="closeAdmin()">LOCK & CLOSE</button>
         </div>
 
+        <div id="admin-split" style="display: flex; gap: 40px; margin-bottom: 50px;">
+            <div style="flex: 1; background: var(--surface); padding: 30px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                <h3 style="margin-top: 0;">1. Select Base System</h3>
+                <select id="adminBaseSelect" onchange="loadAdminConfigurator()" style="margin-bottom: 20px;">
+                    <option value="" disabled selected>Select a system to begin quoting...</option>
+                    <option value="starter">The Starter Pack</option>
+                    <option value="steambox">The Steambox</option>
+                    <option value="streamer">Streamer Rig</option>
+                    <option value="gaming">Elite Gaming</option>
+                    <option value="vr">VR Master</option>
+                    <option value="workstation">Workstation Pro</option>
+                </select>
+
+                <h3 style="margin-top: 20px;">2. Configuration Upgrades</h3>
+                <div id="adminOptionsContainer" style="padding: 15px; background: rgba(0,0,0,0.3); border-radius: 4px; margin-bottom: 20px;">
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Awaiting base system selection...</p>
+                </div>
+
+                <h3 style="margin-top: 20px;">3. Custom Adjustments (Overrides)</h3>
+                <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0;">Add custom parts, rush shipping, or extra labour fees here.</p>
+                <input type="text" id="adminCustomName" placeholder="Description (e.g. Extra 2TB HDD, Next-Day Shipping)">
+                <div class="input-row">
+                    <input type="number" id="adminCustomCost" placeholder="Your Exact Cost (£)" oninput="calcAdminTotal()">
+                    <input type="number" id="adminCustomRetail" placeholder="Client Retail Price (£)" oninput="calcAdminTotal()">
+                </div>
+            </div>
+
+            <div style="flex: 1; background: var(--surface-light); padding: 40px; border-radius: 8px; border: 1px solid var(--primary); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+                <h2 style="font-family: 'Bebas Neue'; font-size: 3rem; margin-top: 0; color: white;">QUOTE SUMMARY</h2>
+                
+                <div style="width: 100%; max-width: 400px; display: flex; justify-content: space-between; align-items: center; margin: 10px 0; padding: 15px 20px; background: rgba(0,0,0,0.5); border-radius: 4px; border-left: 4px solid #f87171;">
+                    <span style="color: var(--text-muted); font-size: 1.1rem;">Total Hardware Cost:</span>
+                    <span id="adminTotalCost" style="color: #f87171; font-weight: bold; font-family: monospace; font-size: 1.5rem;">£0.00</span>
+                </div>
+
+                <div style="width: 100%; max-width: 400px; display: flex; justify-content: space-between; align-items: center; margin: 10px 0; padding: 15px 20px; background: rgba(0,0,0,0.5); border-radius: 4px; border-left: 4px solid white;">
+                    <span style="color: var(--text-muted); font-size: 1.1rem;">Total Retail Invoice:</span>
+                    <span id="adminTotalRetail" style="color: white; font-weight: bold; font-family: monospace; font-size: 1.5rem;">£0.00</span>
+                </div>
+
+                <div style="width: 100%; max-width: 400px; display: flex; justify-content: space-between; align-items: center; margin: 25px 0 10px 0; padding: 20px; background: rgba(74, 222, 128, 0.1); border-radius: 4px; border: 1px solid #4ade80;">
+                    <span style="color: white; font-weight: bold; font-size: 1.2rem;">Gross Profit Margin:</span>
+                    <span id="adminTotalProfit" style="color: #4ade80; font-weight: bold; font-family: monospace; font-size: 2rem;">£0.00</span>
+                </div>
+                
+                <div id="adminMarginPercent" style="background: var(--primary); color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 1.1rem; margin-top: 10px;">Margin: 0.0%</div>
+            </div>
+        </div>
+
+        <h3 style="font-family: 'Bebas Neue'; font-size: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">STATIC BASE REFERENCE TABLE</h3>
         <table class="bom-table">
             <thead>
                 <tr>
                     <th>System Tier</th>
                     <th>Base Spec Overview</th>
-                    <th>Est. HW Cost</th>
-                    <th>Gross Profit (Labour)</th>
-                    <th>Retail Website Price</th>
+                    <th>Est. Base HW Cost</th>
+                    <th>Base Gross Profit</th>
+                    <th>Base Retail Price</th>
                 </tr>
             </thead>
             <tbody id="bom-table-body">
@@ -274,7 +325,7 @@
         
         <footer style="background: #000; border-top: 1px solid rgba(255,255,255,0.05); padding: 4rem 10% 2rem 10%; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
             <p>&copy; 2026 Monara Tech UK. All rights reserved. Not affiliated with any hardware manufacturer.</p>
-            <p style="margin-top: 20px;"><a onclick="openAdmin()" style="color: #444; cursor: pointer; font-size: 0.75rem; text-decoration: none;">[ Admin Panel ]</a></p>
+            <p style="margin-top: 20px;"><a onclick="checkAdminAuth()" style="color: #444; cursor: pointer; font-size: 0.75rem; text-decoration: none;">[ Admin Panel ]</a></p>
         </footer>
     </div>
 
@@ -303,63 +354,30 @@
             setTimeout(() => mainSite.style.opacity = '1', 100);
         });
 
-        // --- ADMIN PANEL LOGIC ---
-        const adminData = [
-            { tier: "The Starter Pack", spec: "Ryzen 5 7600 / RTX 4060 8GB / 16GB RAM / 1TB NVMe", cost: 753.40, profit: 195.60, retail: 949.00 },
-            { tier: "The Steambox", spec: "Ryzen 5 9600X / RTX 4060 Ti / 32GB RAM / 1TB NVMe", cost: 1205.80, profit: 293.20, retail: 1499.00 },
-            { tier: "Streamer Rig", spec: "Core Ultra 5 245K / RTX 5070 / 32GB RAM / 2TB NVMe", cost: 1538.50, profit: 460.50, retail: 1999.00 },
-            { tier: "Elite Gaming", spec: "Ryzen 7 7800X3D / RTX 5070 Ti / 32GB RAM / 2TB NVMe", cost: 1664.00, profit: 485.00, retail: 2149.00 },
-            { tier: "VR Master", spec: "Core Ultra 7 265K / RTX 5080 / 32GB RAM / 2TB NVMe", cost: 2089.00, profit: 310.00, retail: 2399.00 },
-            { tier: "Workstation Pro", spec: "Ryzen 9 9950X / RTX 5090 / 64GB RAM / 4TB NVMe", cost: 3685.00, profit: 614.00, retail: 4299.00 }
-        ];
-
-        const adminBody = document.getElementById('bom-table-body');
-        adminData.forEach(row => {
-            adminBody.innerHTML += `
-                <tr>
-                    <td style="font-weight: bold; color: var(--text-main);">${row.tier}</td>
-                    <td class="bom-spec">${row.spec}</td>
-                    <td class="bom-cost">£${row.cost.toFixed(2)}</td>
-                    <td class="bom-profit">£${row.profit.toFixed(2)}</td>
-                    <td class="bom-retail">£${row.retail.toFixed(2)}</td>
-                </tr>
-            `;
-        });
-
-        function openAdmin() {
-            document.getElementById('main-site').style.display = 'none';
-            document.getElementById('admin-panel').style.display = 'flex';
-            window.scrollTo(0,0);
-        }
-
-        function closeAdmin() {
-            document.getElementById('admin-panel').style.display = 'none';
-            document.getElementById('main-site').style.display = 'block';
-        }
-
-        // --- 2026 UK HARDWARE DATA ARCHITECTURE ---
+        // --- BACKEND CATALOG (Includes Exact Hidden Margin/Cost Data) ---
         const catalog = {
             "starter": {
                 name: "The Starter Pack",
                 desc: "1080p Esports Dominance. Fast load times and reliable frames for competitive gaming.",
                 tag: "ENTRY GAMING",
-                basePrice: 949,
+                basePrice: 949.00,
+                baseCost: 753.40,
                 options: {
                     cpu: [
-                        { name: "AMD Ryzen 5 7600 (6-Core)", price: 0 },
-                        { name: "AMD Ryzen 5 9600X (Next-Gen Zen 5)", price: 85 }
+                        { name: "AMD Ryzen 5 7600 (6-Core)", price: 0, cost: 0 },
+                        { name: "AMD Ryzen 5 9600X (Next-Gen Zen 5)", price: 85, cost: 60.45 }
                     ],
                     gpu: [
-                        { name: "NVIDIA RTX 4060 8GB", price: 0 },
-                        { name: "NVIDIA RTX 5060 8GB (Ada-Next Architecture)", price: 120 }
+                        { name: "NVIDIA RTX 4060 8GB", price: 0, cost: 0 },
+                        { name: "NVIDIA RTX 5060 8GB (Ada-Next)", price: 120, cost: 89.70 }
                     ],
                     ram: [
-                        { name: "16GB DDR5-5600", price: 0 },
-                        { name: "32GB DDR5-6000 CL30", price: 65 }
+                        { name: "16GB DDR5-5600", price: 0, cost: 0 },
+                        { name: "32GB DDR5-6000 CL30", price: 65, cost: 48.80 }
                     ],
                     aesthetics: [
-                        { name: "Standard Black Cables & Air Cooler", price: 0 },
-                        { name: "Braided RGB Cables & 240mm Liquid Cooler", price: 110 }
+                        { name: "Standard Black Cables & Air Cooler", price: 0, cost: 0 },
+                        { name: "Braided RGB Cables & 240mm Liquid Cooler", price: 110, cost: 70.00 }
                     ]
                 }
             },
@@ -367,23 +385,24 @@
                 name: "The Living Room",
                 desc: "A true console-killer packed into an ultra-sleek, whisper-quiet Mini-ITX chassis. Fits perfectly beneath your TV.",
                 tag: "SFF CONSOLE KILLER",
-                basePrice: 1499,
+                basePrice: 1499.00,
+                baseCost: 1205.80,
                 options: {
                     cpu: [
-                        { name: "AMD Ryzen 5 9600X (Low TDP Profile)", price: 0 },
-                        { name: "AMD Ryzen 7 9700X (8-Core Powerhouse)", price: 110 }
+                        { name: "AMD Ryzen 5 9600X (Low TDP Profile)", price: 0, cost: 0 },
+                        { name: "AMD Ryzen 7 9700X (8-Core Powerhouse)", price: 110, cost: 90.00 }
                     ],
                     gpu: [
-                        { name: "NVIDIA RTX 4060 Ti 16GB", price: 0 },
-                        { name: "NVIDIA RTX 5070 12GB (SFF Edition)", price: 180 }
+                        { name: "NVIDIA RTX 4060 Ti 16GB", price: 0, cost: 0 },
+                        { name: "NVIDIA RTX 5070 12GB (SFF Edition)", price: 180, cost: 149.80 }
                     ],
                     storage: [
-                        { name: "1TB PCIe Gen 4 NVMe", price: 0 },
-                        { name: "2TB PCIe Gen 5 NVMe (Ultra Fast Loads)", price: 130 }
+                        { name: "1TB PCIe Gen 4 NVMe", price: 0, cost: 0 },
+                        { name: "2TB PCIe Gen 5 NVMe (Ultra Fast Loads)", price: 130, cost: 100.00 }
                     ],
                     aesthetics: [
-                        { name: "Stealth Black Mesh Panel", price: 0 },
-                        { name: "Tempered Glass Panel + Subtle Internal RGB", price: 40 }
+                        { name: "Stealth Black Mesh Panel", price: 0, cost: 0 },
+                        { name: "Tempered Glass Panel + Subtle Internal RGB", price: 40, cost: 25.00 }
                     ]
                 }
             },
@@ -391,19 +410,20 @@
                 name: "Streamer Rig",
                 desc: "Dual AV1 hardware encoders for crystal clear stream quality without dropping your in-game frame rates.",
                 tag: "DUAL-ENCODE READY",
-                basePrice: 1999,
+                basePrice: 1999.00,
+                baseCost: 1538.50,
                 options: {
                     cpu: [
-                        { name: "Intel Core Ultra 5 245K (14-Core)", price: 0 },
-                        { name: "Intel Core Ultra 7 265K (20-Core)", price: 140 }
+                        { name: "Intel Core Ultra 5 245K (14-Core)", price: 0, cost: 0 },
+                        { name: "Intel Core Ultra 7 265K (20-Core)", price: 140, cost: 109.50 }
                     ],
                     gpu: [
-                        { name: "NVIDIA RTX 5070 12GB (AV1 Ready)", price: 0 },
-                        { name: "NVIDIA RTX 5070 Ti 16GB", price: 190 }
+                        { name: "NVIDIA RTX 5070 12GB (AV1 Ready)", price: 0, cost: 0 },
+                        { name: "NVIDIA RTX 5070 Ti 16GB", price: 190, cost: 160.00 }
                     ],
                     ram: [
-                        { name: "32GB DDR5-6000", price: 0 },
-                        { name: "64GB DDR5-6000 (For Heavy Multitasking)", price: 100 }
+                        { name: "32GB DDR5-6000", price: 0, cost: 0 },
+                        { name: "64GB DDR5-6000 (For Heavy Multitasking)", price: 100, cost: 80.00 }
                     ]
                 }
             },
@@ -411,23 +431,24 @@
                 name: "Elite Gaming",
                 desc: "Unrivalled 3D V-Cache technology for maximum 1440p and 4K framerates. Zero bottlenecks.",
                 tag: "1440P / 4K MASTER",
-                basePrice: 2149,
+                basePrice: 2149.00,
+                baseCost: 1664.00,
                 options: {
                     cpu: [
-                        { name: "AMD Ryzen 7 7800X3D (Gaming King)", price: 0 },
-                        { name: "AMD Ryzen 7 9800X3D (Next-Gen V-Cache)", price: 150 }
+                        { name: "AMD Ryzen 7 7800X3D (Gaming King)", price: 0, cost: 0 },
+                        { name: "AMD Ryzen 7 9800X3D (Next-Gen V-Cache)", price: 150, cost: 110.00 }
                     ],
                     gpu: [
-                        { name: "NVIDIA RTX 5070 Ti 16GB", price: 0 },
-                        { name: "NVIDIA RTX 5080 16GB GDDR7", price: 350 }
+                        { name: "NVIDIA RTX 5070 Ti 16GB", price: 0, cost: 0 },
+                        { name: "NVIDIA RTX 5080 16GB GDDR7", price: 350, cost: 289.00 }
                     ],
                     storage: [
-                        { name: "2TB PCIe Gen 4 NVMe", price: 0 },
-                        { name: "4TB PCIe Gen 5 NVMe (10,000MB/s+)", price: 250 }
+                        { name: "2TB PCIe Gen 4 NVMe", price: 0, cost: 0 },
+                        { name: "4TB PCIe Gen 5 NVMe (10,000MB/s+)", price: 250, cost: 200.00 }
                     ],
                     aesthetics: [
-                        { name: "Premium High Airflow Setup", price: 0 },
-                        { name: "LCD Screen AIO Cooler + Matching RGB Fans", price: 250 }
+                        { name: "Premium High Airflow Setup", price: 0, cost: 0 },
+                        { name: "LCD Screen AIO Cooler + Matching RGB Fans", price: 250, cost: 166.00 }
                     ]
                 }
             },
@@ -435,19 +456,20 @@
                 name: "VR Master",
                 desc: "Packed with massive VRAM and AI tensor cores for flawless, stutter-free high-resolution Virtual Reality.",
                 tag: "ULTRA VR READY",
-                basePrice: 2399,
+                basePrice: 2399.00,
+                baseCost: 2089.00,
                 options: {
                     cpu: [
-                        { name: "Intel Core Ultra 7 265K", price: 0 },
-                        { name: "Intel Core Ultra 9 285K", price: 180 }
+                        { name: "Intel Core Ultra 7 265K", price: 0, cost: 0 },
+                        { name: "Intel Core Ultra 9 285K", price: 180, cost: 150.00 }
                     ],
                     gpu: [
-                        { name: "NVIDIA RTX 5080 16GB", price: 0 },
-                        { name: "NVIDIA RTX 5090 32GB (Maximum VRAM)", price: 750 }
+                        { name: "NVIDIA RTX 5080 16GB", price: 0, cost: 0 },
+                        { name: "NVIDIA RTX 5090 32GB (Maximum VRAM)", price: 750, cost: 651.00 }
                     ],
                     ram: [
-                        { name: "32GB DDR5-6400", price: 0 },
-                        { name: "64GB DDR5-6400 Low Latency", price: 120 }
+                        { name: "32GB DDR5-6400", price: 0, cost: 0 },
+                        { name: "64GB DDR5-6400 Low Latency", price: 120, cost: 80.00 }
                     ]
                 }
             },
@@ -455,23 +477,24 @@
                 name: "Workstation Pro",
                 desc: "Zero compromise rendering, 3D modelling, and complex data crunching. Built for professionals.",
                 tag: "3D MODELLING & RENDER",
-                basePrice: 4299,
+                basePrice: 4299.00,
+                baseCost: 3685.00,
                 options: {
                     cpu: [
-                        { name: "AMD Ryzen 9 9950X (16-Core Zen 5)", price: 0 },
-                        { name: "AMD Threadripper 7960X (24-Core HEDT)", price: 800 }
+                        { name: "AMD Ryzen 9 9950X (16-Core Zen 5)", price: 0, cost: 0 },
+                        { name: "AMD Threadripper 7960X (24-Core HEDT)", price: 800, cost: 670.00 }
                     ],
                     gpu: [
-                        { name: "NVIDIA RTX 5090 32GB GDDR7", price: 0 },
-                        { name: "DUAL NVIDIA RTX 5090 32GB (NVLink)", price: 1800 }
+                        { name: "NVIDIA RTX 5090 32GB GDDR7", price: 0, cost: 0 },
+                        { name: "DUAL NVIDIA RTX 5090 32GB (NVLink)", price: 1800, cost: 1650.00 }
                     ],
                     ram: [
-                        { name: "64GB DDR5-6000", price: 0 },
-                        { name: "128GB DDR5-6000 Pro Kit", price: 250 }
+                        { name: "64GB DDR5-6000", price: 0, cost: 0 },
+                        { name: "128GB DDR5-6000 Pro Kit", price: 250, cost: 185.00 }
                     ],
                     aesthetics: [
-                        { name: "Professional Stealth (No RGB)", price: 0 },
-                        { name: "Showpiece Custom Hardline Watercooling", price: 850 }
+                        { name: "Professional Stealth (No RGB)", price: 0, cost: 0 },
+                        { name: "Showpiece Custom Hardline Watercooling", price: 850, cost: 550.00 }
                     ]
                 }
             },
@@ -480,23 +503,24 @@
                 desc: "You dream it, we engineer it. Fill out your parameters below and our build team will contact you to design a bespoke blueprint.",
                 tag: "100% BESPOKE",
                 basePrice: 0,
+                baseCost: 0,
                 options: {
                     estimated_budget: [
-                        { name: "£1,000 - £1,500 (Entry to Mid-Range)", price: 0 },
-                        { name: "£1,500 - £2,500 (High-End System)", price: 0 },
-                        { name: "£2,500 - £4,000 (Enthusiast Class)", price: 0 },
-                        { name: "£4,000+ (Zero Compromises)", price: 0 }
+                        { name: "£1,000 - £1,500 (Entry to Mid-Range)", price: 0, cost: 0 },
+                        { name: "£1,500 - £2,500 (High-End System)", price: 0, cost: 0 },
+                        { name: "£2,500 - £4,000 (Enthusiast Class)", price: 0, cost: 0 },
+                        { name: "£4,000+ (Zero Compromises)", price: 0, cost: 0 }
                     ],
                     primary_use_case: [
-                        { name: "Pure Gaming (Maximum FPS)", price: 0 },
-                        { name: "Gaming & Streaming Together", price: 0 },
-                        { name: "3D Modelling / Heavy Productivity", price: 0 },
-                        { name: "General / Mixed Use", price: 0 }
+                        { name: "Pure Gaming (Maximum FPS)", price: 0, cost: 0 },
+                        { name: "Gaming & Streaming Together", price: 0, cost: 0 },
+                        { name: "3D Modelling / Heavy Productivity", price: 0, cost: 0 },
+                        { name: "General / Mixed Use", price: 0, cost: 0 }
                     ],
                     preferred_size: [
-                        { name: "Standard Mid-Tower (Best for Cooling)", price: 0 },
-                        { name: "Small Form Factor (Mini-ITX / Compact)", price: 0 },
-                        { name: "Massive Full-Tower (Maximum Hardware)", price: 0 }
+                        { name: "Standard Mid-Tower (Best for Cooling)", price: 0, cost: 0 },
+                        { name: "Small Form Factor (Mini-ITX / Compact)", price: 0, cost: 0 },
+                        { name: "Massive Full-Tower (Maximum Hardware)", price: 0, cost: 0 }
                     ]
                 }
             }
@@ -519,7 +543,7 @@
             `;
         });
 
-        // --- CONFIGURATOR LOGIC ---
+        // --- CLIENT CONFIGURATOR LOGIC ---
         let currentBuildKey = null;
         let currentSelections = {};
 
@@ -531,15 +555,14 @@
             
             const optionsContainer = document.getElementById('hardware-options');
             optionsContainer.innerHTML = '';
-            currentSelections = {}; // reset
+            currentSelections = {}; 
 
-            // Generate UI for Options
             Object.keys(build.options).forEach(category => {
                 const title = category.replace(/_/g, ' ').toUpperCase();
                 let html = `<div class="option-group"><h4>${title}</h4>`;
                 
                 build.options[category].forEach((opt, index) => {
-                    if(index === 0) currentSelections[category] = opt; // Default to first option
+                    if(index === 0) currentSelections[category] = opt; 
                     const isChecked = index === 0 ? 'checked' : '';
                     const selectedClass = index === 0 ? 'selected' : '';
                     let priceText = "";
@@ -586,6 +609,114 @@
             let total = catalog[currentBuildKey].basePrice;
             Object.values(currentSelections).forEach(opt => { total += opt.price; });
             document.getElementById('config-total-price').innerText = currentBuildKey === 'custom' ? 'To Be Quoted' : `£${total.toLocaleString()}`;
+        }
+
+        // --- SECURE ADMIN PANEL LOGIC ---
+        function checkAdminAuth() {
+            const pin = prompt("🔐 Enter 4-Digit Admin PIN to access financial records:");
+            if (pin === "0000") {
+                openAdmin();
+            } else if (pin !== null) {
+                alert("Incorrect PIN. Access Denied.");
+            }
+        }
+
+        function openAdmin() {
+            document.getElementById('main-site').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'flex';
+            window.scrollTo(0,0);
+        }
+
+        function closeAdmin() {
+            document.getElementById('admin-panel').style.display = 'none';
+            document.getElementById('main-site').style.display = 'block';
+        }
+
+        // Generate Static Admin Table
+        const adminBody = document.getElementById('bom-table-body');
+        Object.keys(catalog).forEach(key => {
+            if(key === 'custom') return;
+            const build = catalog[key];
+            const profit = build.basePrice - build.baseCost;
+            adminBody.innerHTML += `
+                <tr>
+                    <td style="font-weight: bold; color: var(--text-main);">${build.name}</td>
+                    <td class="bom-spec">${build.desc.split('.')[0]}.</td>
+                    <td class="bom-cost">£${build.baseCost.toFixed(2)}</td>
+                    <td class="bom-profit">£${profit.toFixed(2)}</td>
+                    <td class="bom-retail">£${build.basePrice.toFixed(2)}</td>
+                </tr>
+            `;
+        });
+
+        // Admin Interactive Calculator Logic
+        let adminActiveSelections = {};
+
+        function loadAdminConfigurator() {
+            const key = document.getElementById('adminBaseSelect').value;
+            const build = catalog[key];
+            const container = document.getElementById('adminOptionsContainer');
+            container.innerHTML = '';
+            adminActiveSelections = {};
+
+            if(key === 'custom') {
+                container.innerHTML = `<p style="color: var(--primary);">Bespoke build selected. Use the overrides below to manual enter costs.</p>`;
+                calcAdminTotal();
+                return;
+            }
+
+            Object.keys(build.options).forEach(category => {
+                const title = category.replace(/_/g, ' ').toUpperCase();
+                let html = `<div style="margin-bottom: 15px;">
+                    <label style="font-weight: bold; display: block; margin-bottom: 5px; font-size: 0.9rem; color: var(--text-muted);">${title}</label>
+                    <select style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 4px;" onchange="updateAdminSelection('${category}', this.value)">`;
+                
+                build.options[category].forEach((opt, index) => {
+                    if(index === 0) adminActiveSelections[category] = opt;
+                    const priceText = opt.price > 0 ? ` (+£${opt.price} Ret | +£${opt.cost.toFixed(2)} Cost)` : " (Included)";
+                    html += `<option value="${index}">${opt.name}${priceText}</option>`;
+                });
+                
+                html += `</select></div>`;
+                container.innerHTML += html;
+            });
+
+            calcAdminTotal();
+        }
+
+        function updateAdminSelection(category, index) {
+            const key = document.getElementById('adminBaseSelect').value;
+            adminActiveSelections[category] = catalog[key].options[category][index];
+            calcAdminTotal();
+        }
+
+        function calcAdminTotal() {
+            const key = document.getElementById('adminBaseSelect').value;
+            if(!key) return;
+
+            let totalCost = catalog[key].baseCost;
+            let totalRetail = catalog[key].basePrice;
+
+            Object.values(adminActiveSelections).forEach(opt => {
+                totalCost += (opt.cost || 0);
+                totalRetail += (opt.price || 0);
+            });
+
+            // Parse Manual Overrides
+            const customCost = parseFloat(document.getElementById('adminCustomCost').value) || 0;
+            const customRetail = parseFloat(document.getElementById('adminCustomRetail').value) || 0;
+
+            totalCost += customCost;
+            totalRetail += customRetail;
+
+            const profit = totalRetail - totalCost;
+            const marginPct = totalRetail > 0 ? ((profit / totalRetail) * 100).toFixed(1) : 0;
+
+            // Update DOM
+            document.getElementById('adminTotalCost').innerText = `£${totalCost.toFixed(2)}`;
+            document.getElementById('adminTotalRetail').innerText = `£${totalRetail.toFixed(2)}`;
+            document.getElementById('adminTotalProfit').innerText = `£${profit.toFixed(2)}`;
+            document.getElementById('adminMarginPercent').innerText = `Margin: ${marginPct}%`;
         }
 
         // --- DISCORD WEBHOOK LOGIC ---
