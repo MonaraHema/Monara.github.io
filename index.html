@@ -90,10 +90,12 @@
         .retail-card {
             background: var(--surface); border: 1px solid rgba(255,255,255,0.05);
             border-radius: 8px; padding: 2.5rem; transition: 0.3s;
+            display: flex; flex-direction: column;
         }
         .retail-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
         .retail-card h3 { font-size: 1.5rem; margin: 0 0 0.5rem 0; }
-        .retail-card .subtitle { color: var(--primary); font-weight: 700; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 1.5rem; }
+        .retail-card .subtitle { color: var(--text-main); font-size: 0.95rem; margin-bottom: 1rem; line-height: 1.5; flex-grow: 1; }
+        .retail-card .tag { color: var(--primary); font-weight: 800; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.5rem; }
         .price { font-size: 1.5rem; font-weight: 800; margin-bottom: 1.5rem; }
 
         /* --- FULL SCREEN CONFIGURATOR --- */
@@ -114,7 +116,6 @@
         .option-group { margin-bottom: 40px; }
         .option-group h4 { font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
         
-        /* Custom Radio Buttons for Upgrades */
         .upgrade-card {
             display: flex; justify-content: space-between; align-items: center;
             background: var(--surface-light); border: 1px solid rgba(255,255,255,0.1);
@@ -126,7 +127,6 @@
         .upgrade-name { font-weight: bold; }
         .upgrade-price { color: var(--primary); font-weight: 800; }
 
-        /* Form Inputs */
         input[type="text"], input[type="email"], textarea {
             width: 100%; padding: 14px; margin: 10px 0; box-sizing: border-box;
             background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
@@ -141,9 +141,9 @@
             <h1>MONARA TECH</h1>
             <h3 style="color: var(--primary); margin-top: 0;">Service Agreement & Disclaimers</h3>
             <p>
-                <strong>1. Pricing:</strong> The PC hardware market is volatile. Estimates shown are baselines. Final invoices reflect exact market costs at the time of quoting.<br><br>
+                <strong>1. Pricing:</strong> The PC hardware market is volatile. Estimates shown are baselines. Final invoices reflect exact market costs in GBP (£) at the time of quoting.<br><br>
                 <strong>2. Deposits:</strong> All custom builds require a non-refundable upfront deposit covering 100% of hardware costs.<br><br>
-                <strong>3. Warranty:</strong> Monara Tech provides a 1-Year Labor Warranty against assembly defects. Manufacturer warranties apply to individual parts.<br><br>
+                <strong>3. Warranty:</strong> Monara Tech provides a 1-Year Labour Warranty against assembly defects. Manufacturer warranties apply to individual parts.<br><br>
                 <strong>4. Timeline:</strong> Standard builds require 7-14 business days from receipt of all parts.
             </p>
             <div class="checkbox-container">
@@ -157,14 +157,14 @@
     <div id="configurator">
         <div class="config-left">
             <div>
-                <button class="btn btn-outline" onclick="closeConfigurator()" style="padding: 10px 20px; font-size: 0.8rem; margin-bottom: 30px;">← BACK</button>
+                <button class="btn btn-outline" onclick="closeConfigurator()" style="padding: 10px 20px; font-size: 0.8rem; margin-bottom: 30px;">← BACK TO ARSENAL</button>
                 <div class="feature-image-placeholder" style="min-height: 250px; border-radius: 8px;">[ SYSTEM PREVIEW ]</div>
                 <h2 class="config-header" id="config-title">SYSTEM NAME</h2>
-                <p id="config-desc" style="color: var(--text-muted);">Configure your hardware below.</p>
+                <p id="config-desc" style="color: var(--text-muted); line-height: 1.5;"></p>
             </div>
             <div>
                 <p style="margin: 0; font-weight: bold; color: var(--text-muted);">ESTIMATED TOTAL</p>
-                <div class="config-total" id="config-total-price">$0.00</div>
+                <div class="config-total" id="config-total-price">£0.00</div>
             </div>
         </div>
         <div class="config-right">
@@ -175,7 +175,7 @@
             <h2 style="font-family: 'Bebas Neue'; font-size: 2.5rem; margin-top: 40px;">2. CLIENT DETAILS</h2>
             <input type="text" id="custName" placeholder="Full Name / Discord Tag" required>
             <input type="email" id="custEmail" placeholder="Email Address" required>
-            <textarea id="custNotes" placeholder="Any specific case colors, lighting themes, or aesthetic requests?" rows="4"></textarea>
+            <textarea id="custNotes" placeholder="Any specific case colours, lighting themes, or aesthetic requests?" rows="4"></textarea>
             
             <button class="btn" id="submitBuildBtn" style="width: 100%; margin-top: 20px; font-size: 1.2rem; padding: 20px;">SUBMIT BUILD REQUEST TO MONARA</button>
         </div>
@@ -184,21 +184,28 @@
     <div id="main-site">
         <nav>
             <a href="#" class="logo">MONARA<span>TECH</span></a>
+            <div>
+                <button class="btn btn-outline" style="padding: 10px 20px; font-size: 0.85rem;" onclick="openConfigurator('custom')">FULLY CUSTOM BUILD</button>
+            </div>
         </nav>
 
         <section class="feature-banner" style="margin-top: 80px;" data-aos="fade-in">
             <div class="feature-text">
                 <h2 style="font-family: 'Bebas Neue'; font-size: 4rem; margin: 0; line-height: 1;">THE STARTER PACK</h2>
                 <p style="color: var(--primary); font-weight: 800; letter-spacing: 2px;">THE PERFECT FIRST GAMING PC</p>
-                <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem;">Designed specifically for smooth, tear-free performance in competitive titles like Fortnite and Valorant. Built with reliable 2026 components.</p>
-                <h3 style="font-size: 2rem; margin: 1.5rem 0;">Starts at $949</h3>
-                <button class="btn" onclick="openConfigurator('starter')">CONFIGURE & BUY</button>
+                <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem;">Designed specifically for smooth, tear-free performance in competitive titles like Fortnite, Valorant, and Roblox. Built with reliable 2026 components for instant plug-and-play gaming.</p>
+                <h3 style="font-size: 2rem; margin: 1.5rem 0;">Starts at £949</h3>
+                <button class="btn" onclick="openConfigurator('starter')">CUSTOMISE & BUY</button>
             </div>
             <div class="feature-image-placeholder">[ STARTER PC IMAGE ]</div>
         </section>
 
         <div class="retail-grid" id="pc-grid">
             </div>
+        
+        <footer style="background: #000; border-top: 1px solid rgba(255,255,255,0.05); padding: 4rem 10% 2rem 10%; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+            <p>&copy; 2026 Monara Tech UK. All rights reserved. Not affiliated with any hardware manufacturer.</p>
+        </footer>
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -226,20 +233,21 @@
             setTimeout(() => mainSite.style.opacity = '1', 100);
         });
 
-        // --- 2026 HARDWARE DATA ARCHITECTURE ---
+        // --- 2026 UK HARDWARE DATA ARCHITECTURE ---
         const catalog = {
             "starter": {
                 name: "The Starter Pack",
-                desc: "1080p Esports Dominance",
+                desc: "1080p Esports Dominance. Fast load times and reliable frames for competitive gaming.",
+                tag: "ENTRY GAMING",
                 basePrice: 949,
                 options: {
                     cpu: [
-                        { name: "AMD Ryzen 5 7600X (6-Core)", price: 0 },
-                        { name: "AMD Ryzen 5 9600X (6-Core, Zen 5)", price: 85 }
+                        { name: "AMD Ryzen 5 7600 (6-Core)", price: 0 },
+                        { name: "AMD Ryzen 5 9600X (Next-Gen Zen 5)", price: 85 }
                     ],
                     gpu: [
                         { name: "NVIDIA RTX 4060 8GB", price: 0 },
-                        { name: "NVIDIA RTX 5060 8GB (Next-Gen)", price: 120 }
+                        { name: "NVIDIA RTX 5060 8GB (Ada-Next Architecture)", price: 120 }
                     ],
                     ram: [
                         { name: "16GB DDR5-5600", price: 0 },
@@ -247,49 +255,114 @@
                     ],
                     aesthetics: [
                         { name: "Standard Black Cables & Air Cooler", price: 0 },
-                        { name: "Braided RGB Cables & Entry Liquid Cooler", price: 110 }
+                        { name: "Braided RGB Cables & 240mm Liquid Cooler", price: 110 }
+                    ]
+                }
+            },
+            "steambox": {
+                name: "The Living Room",
+                desc: "A true console-killer packed into an ultra-sleek, whisper-quiet Mini-ITX chassis. Fits perfectly beneath your TV.",
+                tag: "SFF CONSOLE KILLER",
+                basePrice: 1499,
+                options: {
+                    cpu: [
+                        { name: "AMD Ryzen 5 9600X (Low TDP Profile)", price: 0 },
+                        { name: "AMD Ryzen 7 9700X (8-Core Powerhouse)", price: 110 }
+                    ],
+                    gpu: [
+                        { name: "NVIDIA RTX 4060 Ti 16GB", price: 0 },
+                        { name: "NVIDIA RTX 5070 12GB (SFF Edition)", price: 180 }
+                    ],
+                    storage: [
+                        { name: "1TB PCIe Gen 4 NVMe", price: 0 },
+                        { name: "2TB PCIe Gen 5 NVMe (Ultra Fast Loads)", price: 130 }
+                    ],
+                    aesthetics: [
+                        { name: "Stealth Black Mesh Panel", price: 0 },
+                        { name: "Tempered Glass Panel + Subtle Internal RGB", price: 40 }
+                    ]
+                }
+            },
+            "streamer": {
+                name: "Streamer Rig",
+                desc: "Dual AV1 hardware encoders for crystal clear stream quality without dropping your in-game frame rates.",
+                tag: "DUAL-ENCODE READY",
+                basePrice: 1999,
+                options: {
+                    cpu: [
+                        { name: "Intel Core Ultra 5 245K (14-Core)", price: 0 },
+                        { name: "Intel Core Ultra 7 265K (20-Core)", price: 140 }
+                    ],
+                    gpu: [
+                        { name: "NVIDIA RTX 5070 12GB (AV1 Ready)", price: 0 },
+                        { name: "NVIDIA RTX 5070 Ti 16GB", price: 190 }
+                    ],
+                    ram: [
+                        { name: "32GB DDR5-6000", price: 0 },
+                        { name: "64GB DDR5-6000 (For Heavy Multitasking)", price: 100 }
                     ]
                 }
             },
             "gaming": {
                 name: "Elite Gaming",
-                desc: "1440p / 4K Masterclass",
-                basePrice: 2299,
+                desc: "Unrivalled 3D V-Cache technology for maximum 1440p and 4K framerates. Zero bottlenecks.",
+                tag: "1440P / 4K MASTER",
+                basePrice: 2149,
                 options: {
                     cpu: [
                         { name: "AMD Ryzen 7 7800X3D (Gaming King)", price: 0 },
-                        { name: "AMD Ryzen 7 9800X3D (Next-Gen 3D V-Cache)", price: 150 }
+                        { name: "AMD Ryzen 7 9800X3D (Next-Gen V-Cache)", price: 150 }
                     ],
                     gpu: [
-                        { name: "NVIDIA RTX 4070 Ti SUPER 16GB", price: 0 },
-                        { name: "NVIDIA RTX 5070 16GB GDDR7", price: 200 },
-                        { name: "NVIDIA RTX 5080 16GB GDDR7", price: 600 }
+                        { name: "NVIDIA RTX 5070 Ti 16GB", price: 0 },
+                        { name: "NVIDIA RTX 5080 16GB GDDR7", price: 350 }
                     ],
                     storage: [
                         { name: "2TB PCIe Gen 4 NVMe", price: 0 },
-                        { name: "2TB PCIe Gen 5 NVMe (10,000MB/s+)", price: 120 }
+                        { name: "4TB PCIe Gen 5 NVMe (10,000MB/s+)", price: 250 }
                     ],
                     aesthetics: [
-                        { name: "Premium Airflow Setup", price: 0 },
+                        { name: "Premium High Airflow Setup", price: 0 },
                         { name: "LCD Screen AIO Cooler + Matching RGB Fans", price: 250 }
+                    ]
+                }
+            },
+            "vr": {
+                name: "VR Master",
+                desc: "Packed with massive VRAM and AI tensor cores for flawless, stutter-free high-resolution Virtual Reality.",
+                tag: "ULTRA VR READY",
+                basePrice: 2399,
+                options: {
+                    cpu: [
+                        { name: "Intel Core Ultra 7 265K", price: 0 },
+                        { name: "Intel Core Ultra 9 285K", price: 180 }
+                    ],
+                    gpu: [
+                        { name: "NVIDIA RTX 5080 16GB", price: 0 },
+                        { name: "NVIDIA RTX 5090 32GB (Maximum VRAM)", price: 750 }
+                    ],
+                    ram: [
+                        { name: "32GB DDR5-6400", price: 0 },
+                        { name: "64GB DDR5-6400 Low Latency", price: 120 }
                     ]
                 }
             },
             "workstation": {
                 name: "Workstation Pro",
-                desc: "Zero Compromise Rendering & 3D",
-                basePrice: 4499,
+                desc: "Zero compromise rendering, 3D modelling, and complex data crunching. Built for professionals.",
+                tag: "3D MODELLING & RENDER",
+                basePrice: 4299,
                 options: {
                     cpu: [
-                        { name: "Intel Core Ultra 9 285K", price: 0 },
-                        { name: "AMD Ryzen 9 9950X (16-Core Zen 5)", price: 80 }
+                        { name: "AMD Ryzen 9 9950X (16-Core Zen 5)", price: 0 },
+                        { name: "AMD Threadripper 7960X (24-Core HEDT)", price: 800 }
                     ],
                     gpu: [
-                        { name: "NVIDIA RTX 4090 24GB", price: 0 },
-                        { name: "NVIDIA RTX 5090 32GB GDDR7 (The Pinnacle)", price: 800 }
+                        { name: "NVIDIA RTX 5090 32GB GDDR7", price: 0 },
+                        { name: "DUAL NVIDIA RTX 5090 32GB (NVLink)", price: 1800 }
                     ],
                     ram: [
-                        { name: "64GB DDR5-6400", price: 0 },
+                        { name: "64GB DDR5-6000", price: 0 },
                         { name: "128GB DDR5-6000 Pro Kit", price: 250 }
                     ],
                     aesthetics: [
@@ -297,21 +370,39 @@
                         { name: "Showpiece Custom Hardline Watercooling", price: 850 }
                     ]
                 }
+            },
+            "custom": {
+                name: "Fully Custom Build",
+                desc: "You dream it, we build it. Select your preferred tier and leave detailed notes below.",
+                tag: "100% BESPOKE",
+                basePrice: 0,
+                options: {
+                    tier: [
+                        { name: "Enthusiast Tier (Budget: £1,500 - £2,500)", price: 0 },
+                        { name: "Extreme Tier (Budget: £2,500 - £4,000)", price: 0 },
+                        { name: "God Tier (Budget: £4,000+)", price: 0 }
+                    ],
+                    cooling: [
+                        { name: "Standard AIO Liquid Cooling", price: 0 },
+                        { name: "Custom Rigid Tube Watercooling Loop", price: 800 }
+                    ]
+                }
             }
         };
 
-        // Inject Main Site Cards
+        // Inject Main Site Cards (Skipping 'starter' & 'custom')
         const grid = document.getElementById('pc-grid');
         Object.keys(catalog).forEach(key => {
-            if(key === 'starter') return; // Handled by banner
+            if(key === 'starter' || key === 'custom') return; 
             const pc = catalog[key];
             grid.innerHTML += `
                 <div class="retail-card" data-aos="fade-up">
-                    <div style="height: 150px; background: rgba(255,255,255,0.05); margin-bottom: 20px; border-radius: 4px;"></div>
+                    <div style="height: 150px; background: rgba(255,255,255,0.05); margin-bottom: 20px; border-radius: 4px; display:flex; align-items:center; justify-content:center; color:#555;">[ SYSTEM IMAGE ]</div>
+                    <div class="tag">${pc.tag}</div>
                     <h3>${pc.name}</h3>
                     <div class="subtitle">${pc.desc}</div>
-                    <div class="price">Starts at $${pc.basePrice}</div>
-                    <button class="btn" style="width: 100%;" onclick="openConfigurator('${key}')">CONFIGURE</button>
+                    <div class="price">Starts at £${pc.basePrice.toLocaleString()}</div>
+                    <button class="btn" style="width: 100%;" onclick="openConfigurator('${key}')">CUSTOMISE</button>
                 </div>
             `;
         });
@@ -339,7 +430,7 @@
                     if(index === 0) currentSelections[category] = opt; // Default to first option
                     const isChecked = index === 0 ? 'checked' : '';
                     const selectedClass = index === 0 ? 'selected' : '';
-                    const priceText = opt.price === 0 ? 'Included' : `+$${opt.price}`;
+                    const priceText = opt.price === 0 ? 'Included' : `+£${opt.price.toLocaleString()}`;
 
                     html += `
                         <label class="upgrade-card ${selectedClass}" id="card-${category}-${index}">
@@ -365,14 +456,12 @@
         }
 
         function updatePrice(category, index) {
-            // Update UI styling
             const build = catalog[currentBuildKey];
             build.options[category].forEach((_, i) => {
                 document.getElementById(`card-${category}-${i}`).classList.remove('selected');
             });
             document.getElementById(`card-${category}-${index}`).classList.add('selected');
 
-            // Update data logic
             currentSelections[category] = build.options[category][index];
             recalculateTotal();
         }
@@ -380,7 +469,7 @@
         function recalculateTotal() {
             let total = catalog[currentBuildKey].basePrice;
             Object.values(currentSelections).forEach(opt => { total += opt.price; });
-            document.getElementById('config-total-price').innerText = `$${total.toLocaleString()}`;
+            document.getElementById('config-total-price').innerText = currentBuildKey === 'custom' ? 'TBA' : `£${total.toLocaleString()}`;
         }
 
         // --- DISCORD WEBHOOK LOGIC ---
@@ -391,12 +480,11 @@
             const email = document.getElementById('custEmail').value;
             const notes = document.getElementById('custNotes').value || "None";
 
-            if(!name || !email) return alert("Please fill out your Name and Email.");
+            if(!name || !email) return alert("Please fill out your Name and Email so we can contact you.");
 
             const btn = document.getElementById('submitBuildBtn');
             btn.innerText = "TRANSMITTING..."; btn.disabled = true;
 
-            // Format selected hardware for Discord
             let hardwareList = "";
             let total = catalog[currentBuildKey].basePrice;
             Object.keys(currentSelections).forEach(cat => {
@@ -404,16 +492,18 @@
                 total += currentSelections[cat].price;
             });
 
+            const totalString = currentBuildKey === 'custom' ? 'To Be Quoted' : `£${total.toLocaleString()}`;
+
             const payload = {
                 embeds: [{
-                    title: `🛒 NEW ORDER: ${catalog[currentBuildKey].name}`,
+                    title: `🛒 NEW UK ORDER: ${catalog[currentBuildKey].name}`,
                     color: 10309341,
                     fields: [
                         { name: "Client", value: name, inline: true },
                         { name: "Email", value: email, inline: true },
-                        { name: "Total Quote Estimate", value: `$${total.toLocaleString()}`, inline: true },
-                        { name: "Selected Hardware", value: hardwareList },
-                        { name: "Notes", value: notes }
+                        { name: "Total Estimate", value: totalString, inline: true },
+                        { name: "Hardware Selection", value: hardwareList },
+                        { name: "Client Notes", value: notes }
                     ],
                     timestamp: new Date()
                 }]
@@ -421,7 +511,7 @@
 
             try {
                 await fetch(DISCORD_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                alert("Order successfully transmitted! We will contact you soon.");
+                alert("Order successfully transmitted! The Monara UK team will contact you shortly.");
                 closeConfigurator();
             } catch (err) { alert("Error connecting. Please try again."); } 
             finally { btn.innerText = "SUBMIT BUILD REQUEST TO MONARA"; btn.disabled = false; }
