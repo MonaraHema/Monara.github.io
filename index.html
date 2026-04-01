@@ -8,11 +8,10 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #a855f7; /* Vibrant Purple */
-            --accent: #d8b4fe;  /* Light Purple */
-            --bg: #0b0612;      /* Deep Midnight Purple */
+            --primary: #a855f7; 
+            --accent: #d8b4fe;  
+            --bg: #0b0612;      
             --card-bg: rgba(30, 20, 50, 0.4);
-            --glass: rgba(255, 255, 255, 0.03);
         }
 
         body {
@@ -24,7 +23,6 @@
             line-height: 1.6;
         }
 
-        /* Ambient Background */
         .ambient-glow {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -34,7 +32,6 @@
             z-index: -1;
         }
 
-        /* Navigation */
         nav {
             padding: 1.5rem 10%;
             display: flex;
@@ -75,12 +72,12 @@
             margin-bottom: 1rem;
         }
 
-        /* Grid System */
         .section-title {
             text-align: center;
             font-family: 'Orbitron';
             color: var(--primary);
-            margin-top: 4rem;
+            margin-top: 5rem;
+            font-size: 2rem;
         }
 
         .container {
@@ -100,59 +97,30 @@
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        .pc-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 4px;
-            background: var(--primary);
-            opacity: 0;
-            transition: 0.3s;
-        }
-
         .pc-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-5px);
             border-color: var(--primary);
             background: rgba(40, 25, 70, 0.6);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2);
         }
 
-        .pc-card:hover::before { opacity: 1; }
+        .pc-card h2 { font-family: 'Orbitron'; font-size: 1.4rem; margin-bottom: 5px; color: #fff;}
+        .pc-card ul { padding: 0; list-style: none; font-size: 0.85rem; color: #ccc; margin-bottom: 25px; }
+        .pc-card li { margin-bottom: 10px; display: flex; align-items: flex-start; }
+        .pc-card li::before { content: '▹'; color: var(--primary); margin-right: 10px; font-weight: bold;}
 
-        .pc-card h2 { font-family: 'Orbitron'; font-size: 1.2rem; margin-bottom: 10px; }
-        .pc-card ul { padding: 0; list-style: none; font-size: 0.9rem; color: #bbb; margin-bottom: 25px; }
-        .pc-card li { margin-bottom: 8px; display: flex; align-items: center; }
-        .pc-card li::before { content: '▹'; color: var(--primary); margin-right: 10px; }
+        .price-tag { font-family: 'Orbitron'; color: var(--primary); font-size: 1.2rem; margin-bottom: 15px; }
 
-        .price-tag { font-family: 'Orbitron'; color: var(--primary); font-size: 1.1rem; }
-
-        /* Form Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 2, 10, 0.95);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 2000; opacity: 0; pointer-events: none; transition: 0.3s;
-        }
-        .modal-overlay.active { opacity: 1; pointer-events: all; }
-
-        .modal-content {
-            background: #150d21;
-            padding: 40px;
-            border-radius: 20px;
-            width: 90%; max-width: 500px;
-            border: 1px solid var(--primary);
-        }
-
-        input, textarea, select {
-            width: 100%; padding: 12px; margin: 10px 0;
-            background: #231836; border: 1px solid rgba(168, 85, 247, 0.3);
-            color: white; border-radius: 8px; font-family: inherit;
+        .tag {
+            font-size: 0.75rem; background: rgba(168, 85, 247, 0.2);
+            color: #d8b4fe; padding: 6px 12px; border-radius: 20px;
+            display: inline-block; margin-bottom: 15px; font-weight: bold;
+            letter-spacing: 1px;
         }
 
         .btn {
@@ -160,13 +128,61 @@
             padding: 15px 30px; border-radius: 12px; cursor: pointer;
             font-family: 'Orbitron'; font-weight: bold; width: 100%;
             transition: 0.3s;
+            text-transform: uppercase;
         }
-        .btn:hover { filter: brightness(1.2); box-shadow: 0 0 20px var(--primary); }
+        .btn:hover { background: #9333ea; box-shadow: 0 0 15px rgba(168, 85, 247, 0.5); }
 
-        .tag {
-            font-size: 0.7rem; background: rgba(168, 85, 247, 0.2);
-            color: var(--primary); padding: 4px 10px; border-radius: 20px;
-            display: inline-block; margin-bottom: 10px; font-weight: bold;
+        /* Custom Build CTA Section */
+        .custom-cta {
+            background: linear-gradient(135deg, rgba(30, 20, 50, 0.8), rgba(15, 10, 25, 0.9));
+            border: 1px solid var(--primary);
+            margin: 2rem 10%;
+            padding: 4rem 2rem;
+            border-radius: 24px;
+            text-align: center;
+        }
+
+        /* Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px 10% 80px 10%;
+        }
+
+        .gallery-placeholder {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px dashed rgba(168, 85, 247, 0.4);
+            height: 250px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-family: 'Orbitron';
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .gallery-placeholder:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 2, 10, 0.95);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 2000; opacity: 0; pointer-events: none; transition: 0.3s;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+
+        .modal-content {
+            background: #150d21; padding: 40px; border-radius: 20px;
+            width: 90%; max-width: 500px; border: 1px solid var(--primary);
+        }
+
+        input, textarea {
+            width: 100%; padding: 12px; margin: 10px 0; box-sizing: border-box;
+            background: #231836; border: 1px solid rgba(168, 85, 247, 0.3);
+            color: white; border-radius: 8px; font-family: inherit;
         }
     </style>
 </head>
@@ -176,29 +192,43 @@
 
     <nav>
         <div class="logo">MONARA</div>
-        <div style="font-size: 0.8rem; letter-spacing: 1px;">PREMIUM HARDWARE</div>
+        <div style="font-size: 0.8rem; letter-spacing: 1px; color: #aaa;">SYSTEM INTEGRATION</div>
     </nav>
 
     <header>
         <h1 data-aos="zoom-out">FORGED IN POWER</h1>
-        <p data-aos="fade-up" style="max-width: 600px; color: #aaa;">Expertly curated PC configurations for professionals, gamers, and enthusiasts. Your vision, our craft.</p>
+        <p data-aos="fade-up" style="max-width: 600px; color: #aaa; font-size: 1.1rem;">Expertly curated PC configurations for professionals, gamers, and enthusiasts. From elite workstations to the perfect first gaming PC.</p>
     </header>
 
-    <h2 class="section-title" data-aos="fade-up">SELECT YOUR PURPOSE</h2>
+    <h2 class="section-title" data-aos="fade-up">CURATED SYSTEMS</h2>
 
     <div class="container" id="pc-grid">
         </div>
 
+    <div class="custom-cta" data-aos="zoom-in">
+        <h2 style="font-family: 'Orbitron'; font-size: 2.5rem; margin-top: 0; color: #fff;">Need Something 100% Unique?</h2>
+        <p style="color: #bbb; max-width: 600px; margin: 0 auto 2rem auto; font-size: 1.1rem;">Custom water-cooling loops, specific case themes, or specialized hardware. Tell us your vision, and we will engineer it from the ground up.</p>
+        <button class="btn" style="max-width: 300px;" onclick="openModal('Fully Custom Request', 'Client to specify all requirements in the notes below. Budget TBA.')">REQUEST CUSTOM BUILD</button>
+    </div>
+
+    <h2 class="section-title" data-aos="fade-up">RECENT BUILDS</h2>
+    <div class="gallery-grid" data-aos="fade-up">
+        <div class="gallery-placeholder">(Image Placeholder 1)</div>
+        <div class="gallery-placeholder">(Image Placeholder 2)</div>
+        <div class="gallery-placeholder">(Image Placeholder 3)</div>
+        <div class="gallery-placeholder">(Image Placeholder 4)</div>
+    </div>
+
     <div class="modal-overlay" id="orderModal">
         <div class="modal-content">
-            <h2 id="modalTitle" style="font-family: 'Orbitron'; color: var(--primary);">Request Build</h2>
-            <p id="modalSpecs" style="font-size: 0.8rem; color: #888; margin-bottom: 20px;"></p>
+            <h2 id="modalTitle" style="font-family: 'Orbitron'; color: var(--primary); margin-top: 0;">Request Build</h2>
+            <p id="modalSpecs" style="font-size: 0.85rem; color: #aaa; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px;"></p>
             <form id="orderForm">
-                <input type="text" id="custName" placeholder="Your Name / Discord" required>
+                <input type="text" id="custName" placeholder="Your Name / Discord Tag" required>
                 <input type="email" id="custEmail" placeholder="Email Address" required>
-                <textarea id="custNotes" placeholder="Any specific case preferences or extra storage needs?" rows="4"></textarea>
-                <button type="submit" class="btn" id="submitBtn">SEND REQUEST</button>
-                <button type="button" onclick="closeModal()" style="background:none; border:none; color:#666; width:100%; margin-top:10px; cursor:pointer;">Cancel</button>
+                <textarea id="custNotes" placeholder="Any specific case preferences, aesthetic choices, or extra storage needs?" rows="4" required></textarea>
+                <button type="submit" class="btn" id="submitBtn">SEND REQUEST TO MONARA</button>
+                <button type="button" onclick="closeModal()" style="background:none; border:none; color:#888; width:100%; margin-top:15px; cursor:pointer; font-family: 'Plus Jakarta Sans';">Cancel</button>
             </form>
         </div>
     </div>
@@ -207,45 +237,80 @@
     <script>
         AOS.init({ duration: 800, once: true });
 
-        // REPLACE THIS WITH YOUR ACTUAL WEBHOOK
+        // YOUR LIVE DISCORD WEBHOOK
         const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1488697624134418496/bRHm4qAykI26W5tUQJi4SiIV8o1McJ937yXNe0CEvYr8Mo-vB4VB_0w58k6LNW1EMIr4";
 
+        // Extremely specific hardware lists for maximum professionalism
         const builds = [
             {
                 name: "Workstation Pro",
                 tag: "3D MODELING & RENDER",
-                specs: ["Ryzen 9 7950X", "RTX 4090 24GB", "64GB DDR5 6000MHz", "4TB Gen5 NVMe"],
-                price: "Starts at $4,200"
+                specs: [
+                    "CPU: AMD Ryzen 9 7950X (16-Core, 32-Thread)", 
+                    "GPU: NVIDIA GeForce RTX 4090 24GB GDDR6X", 
+                    "RAM: G.Skill Trident Z5 64GB (2x32GB) DDR5-6000 CL30", 
+                    "Storage: Samsung 990 PRO 4TB PCIe 4.0 NVMe M.2",
+                    "Cooling: 360mm Premium AIO Liquid Cooler"
+                ],
+                price: "$4,199.99"
             },
             {
-                name: "Virtual Reality",
+                name: "Virtual Reality Master",
                 tag: "ULTRA VR READY",
-                specs: ["Core i7-14700K", "RTX 4080 Super", "32GB DDR5 RAM", "Quiet Liquid Cooling"],
-                price: "Starts at $2,800"
+                specs: [
+                    "CPU: Intel Core i7-14700K (20-Core)", 
+                    "GPU: NVIDIA GeForce RTX 4080 SUPER 16GB", 
+                    "RAM: Corsair Vengeance 32GB DDR5-6000", 
+                    "Storage: WD_Black SN850X 2TB NVMe M.2",
+                    "Motherboard: Z790 Chipset with WiFi 7"
+                ],
+                price: "$2,749.99"
+            },
+            {
+                name: "The Starter Pack",
+                tag: "PERFECT FOR FORTNITE, ROBLOX & MINECRAFT",
+                specs: [
+                    "CPU: AMD Ryzen 5 5600 (Fast & Reliable)", 
+                    "GPU: NVIDIA RTX 4060 8GB (Smooth 1080p Gaming)", 
+                    "RAM: 16GB High-Speed DDR4 (Great for homework & games)", 
+                    "Storage: 1TB Fast NVMe SSD (Instant load times)",
+                    "Extras: Built-in Wi-Fi, Bluetooth, & Customizable RGB Lights"
+                ],
+                price: "$899.99"
             },
             {
                 name: "Elite Gaming",
                 tag: "1440P / 4K MASTER",
-                specs: ["Ryzen 7 7800X3D", "RTX 4070 Ti Super", "32GB RAM", "Premium RGB Air Flow"],
-                price: "Starts at $2,100"
+                specs: [
+                    "CPU: AMD Ryzen 7 7800X3D (Best-in-class gaming)", 
+                    "GPU: NVIDIA GeForce RTX 4070 Ti SUPER 16GB", 
+                    "RAM: TeamGroup 32GB DDR5-6000 CL30", 
+                    "Case: High-Airflow Mesh Front with ARGB Fans"
+                ],
+                price: "$2,149.99"
             },
             {
                 name: "Streamer Rig",
                 tag: "DUAL-ENCODE READY",
-                specs: ["Core i7-14700K", "RTX 4070 Super", "32GB RAM", "Elgato Capture Ready"],
-                price: "Starts at $1,950"
+                specs: [
+                    "CPU: Intel Core i5-13600K (14-Core)", 
+                    "GPU: NVIDIA RTX 4070 SUPER 12GB (AV1 Encoding)", 
+                    "RAM: 32GB DDR5 RAM", 
+                    "Storage: 2TB NVMe Gen4 SSD",
+                    "Motherboard: Heavy USB Connectivity for Peripherals"
+                ],
+                price: "$1,899.99"
             },
             {
                 name: "The Living Room",
                 tag: "CONSOLE KILLER (SFF)",
-                specs: ["Ryzen 5 7600", "RTX 4060 Ti", "ITX Form Factor", "Ultra-Silent Profile"],
-                price: "Starts at $1,300"
-            },
-            {
-                name: "The Entry",
-                tag: "BUDGET PERFORMANCE",
-                specs: ["Ryzen 5 5600", "RX 6700 XT", "16GB DDR4", "High-Value Mesh Case"],
-                price: "Starts at $850"
+                specs: [
+                    "CPU: AMD Ryzen 5 7600", 
+                    "GPU: NVIDIA RTX 4060 Ti 8GB", 
+                    "Form Factor: Mini-ITX (Fits beautifully under a TV)", 
+                    "Cooling: Low-Profile Noctua Air Cooler (Ultra-Silent)"
+                ],
+                price: "$1,349.99"
             }
         ];
 
@@ -253,15 +318,15 @@
         const grid = document.getElementById('pc-grid');
         builds.forEach((pc, index) => {
             grid.innerHTML += `
-                <div class="pc-card" data-aos="fade-up" data-aos-delay="${index * 100}">
+                <div class="pc-card" data-aos="fade-up" data-aos-delay="${index * 50}">
                     <div>
                         <span class="tag">${pc.tag}</span>
                         <h2>${pc.name}</h2>
                         <ul>${pc.specs.map(s => `<li>${s}</li>`).join('')}</ul>
                     </div>
                     <div>
-                        <div class="price-tag">${pc.price}</div>
-                        <button class="btn" style="margin-top:20px" onclick="openModal('${pc.name}', '${pc.specs.join(', ')}')">CONFIGURE</button>
+                        <div class="price-tag">Est. ${pc.price}</div>
+                        <button class="btn" onclick="openModal('${pc.name}', '${pc.specs.join(' | ')}')">SELECT THIS BUILD</button>
                     </div>
                 </div>
             `;
@@ -279,24 +344,28 @@
             modal.classList.add('active');
         }
 
-        function closeModal() { modal.classList.remove('active'); }
+        function closeModal() { 
+            modal.classList.remove('active'); 
+            document.getElementById('orderForm').reset();
+        }
 
         document.getElementById('orderForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
-            btn.innerText = "SENDING...";
+            btn.innerText = "TRANSMITTING...";
+            btn.disabled = true;
             
             const payload = {
                 embeds: [{
-                    title: `⚡ NEW BUILD REQUEST: ${activeModel}`,
-                    color: 11032055, // Purple
+                    title: `⚡ NEW BUILD INQUIRY: ${activeModel}`,
+                    color: 11032055,
                     fields: [
-                        { name: "Client", value: document.getElementById('custName').value, inline: true },
-                        { name: "Email", value: document.getElementById('custEmail').value, inline: true },
-                        { name: "Base Specs", value: activeSpecs },
-                        { name: "Custom Notes", value: document.getElementById('custNotes').value || "None" }
+                        { name: "Client Contact", value: document.getElementById('custName').value, inline: true },
+                        { name: "Email Address", value: document.getElementById('custEmail').value, inline: true },
+                        { name: "Base Specs / Request Type", value: activeSpecs },
+                        { name: "Client Notes & Custom Requests", value: document.getElementById('custNotes').value }
                     ],
-                    footer: { text: "Monara Tech Lead Gen" },
+                    footer: { text: "Monara Tech Automated System" },
                     timestamp: new Date()
                 }]
             };
@@ -307,12 +376,15 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                alert("Request Sent! Monara Tech will be in touch.");
+                alert("Request successfully transmitted! Monara Tech will review your specs and reach out shortly.");
                 closeModal();
             } catch (err) {
-                alert("Error sending request. Check your Webhook URL.");
+                alert("Error connecting to server. Please try again later.");
+                console.error(err);
+            } finally {
+                btn.innerText = "SEND REQUEST TO MONARA";
+                btn.disabled = false;
             }
-            btn.innerText = "SEND REQUEST";
         });
     </script>
 </body>
