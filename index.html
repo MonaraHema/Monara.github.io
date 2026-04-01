@@ -11,6 +11,7 @@
             --primary: #00f2ff; /* Cyan */
             --accent: #ff00ff;  /* Neon Pink */
             --bg: #050505;
+            --glass: rgba(20, 20, 20, 0.8);
         }
 
         body {
@@ -21,7 +22,7 @@
             overflow-x: hidden;
         }
 
-        /* The "All Bells" Animated Background */
+        /* Animated Background */
         .neon-mesh {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -31,7 +32,7 @@
             z-index: -1;
         }
 
-        /* Glowing Header */
+        /* Header */
         header {
             height: 100vh;
             display: flex;
@@ -50,7 +51,7 @@
             margin: 0;
         }
 
-        /* Glassmorphism Cards */
+        /* Grid */
         .container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -81,6 +82,7 @@
             color: var(--primary);
         }
 
+        /* Buttons */
         .button-pulse {
             margin-top: 30px;
             padding: 15px 40px;
@@ -100,6 +102,96 @@
             70% { box-shadow: 0 0 0 15px rgba(0, 242, 255, 0); }
             100% { box-shadow: 0 0 0 0 rgba(0, 242, 255, 0); }
         }
+
+        /* Modal / Form Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: var(--bg);
+            border: 1px solid var(--primary);
+            padding: 40px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            background: none; border: none;
+            color: white; font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-content h2 {
+            font-family: 'Orbitron';
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 5px;
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: var(--bg);
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-family: 'Orbitron';
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: white;
+            box-shadow: 0 0 15px var(--primary);
+        }
     </style>
 </head>
 <body>
@@ -109,30 +201,134 @@
     <header>
         <h1 class="glitch-title" data-aos="zoom-in">Monara Tech</h1>
         <p data-aos="fade-up" data-aos-delay="300">Custom Built. Performance Driven.</p>
-        <button class="button-pulse">Configure Your Rig</button>
+        <button class="button-pulse" onclick="openModal('General Config')">Configure Your Rig</button>
     </header>
 
     <div class="container">
-        <div class="pc-card" data-aos="fade-right">
+        <div class="pc-card" data-aos="fade-right" onclick="openModal('The Titan')">
             <h2>The Titan</h2>
             <p>RTX 5090 | 128GB DDR5</p>
             <p>Built for the creators of tomorrow.</p>
         </div>
-        <div class="pc-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="pc-card" data-aos="fade-up" data-aos-delay="200" onclick="openModal('The Ghost')">
             <h2>The Ghost</h2>
             <p>Whiteout Aesthetic | Liquid Cooled</p>
             <p>Silence meets absolute power.</p>
         </div>
-        <div class="pc-card" data-aos="fade-left" data-aos-delay="400">
+        <div class="pc-card" data-aos="fade-left" data-aos-delay="400" onclick="openModal('The Edge')">
             <h2>The Edge</h2>
             <p>Small Form Factor | Mini-ITX</p>
             <p>Maximum power in a minimal footprint.</p>
         </div>
     </div>
 
+    <div class="modal-overlay" id="formModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <h2>Request a Build</h2>
+            <form id="buildForm">
+                <div class="form-group">
+                    <label>Discord Tag or Email</label>
+                    <input type="text" id="contact" required placeholder="User#1234 or email@domain.com">
+                </div>
+                <div class="form-group">
+                    <label>Base Model</label>
+                    <input type="text" id="modelSelect" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Estimated Budget (USD)</label>
+                    <input type="text" id="budget" required placeholder="$3000">
+                </div>
+                <div class="form-group">
+                    <label>Specific Requests / Use Case</label>
+                    <textarea id="notes" rows="4" placeholder="Streaming, 4K gaming, specific case color..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn" id="submitBtn">Send to Monara Tech</button>
+            </form>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1000 });
+        // Initialize Scroll Animations
+        AOS.init({ duration: 1000, once: true });
+
+        // --- WEBHOOK CONFIGURATION ---
+        // PASTE YOUR DISCORD WEBHOOK URL IN THE QUOTES BELOW
+        const DISCORD_WEBHOOK_URL = "YOUR_DISCORD_WEBHOOK_URL_HERE";
+
+        // Modal Logic
+        const modal = document.getElementById('formModal');
+        const modelInput = document.getElementById('modelSelect');
+
+        function openModal(modelName) {
+            modelInput.value = modelName;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.getElementById('buildForm').reset();
+        }
+
+        // Close modal if user clicks outside the box
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Form Submission Logic
+        document.getElementById('buildForm').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Prevents page reload
+
+            const btn = document.getElementById('submitBtn');
+            btn.textContent = "Sending...";
+            btn.disabled = true;
+
+            // Gather Data
+            const contact = document.getElementById('contact').value;
+            const model = document.getElementById('modelSelect').value;
+            const budget = document.getElementById('budget').value;
+            const notes = document.getElementById('notes').value || "None provided.";
+
+            // Construct Discord Embed Payload
+            const payload = {
+                username: "Monara Tech Website",
+                avatar_url: "https://i.imgur.com/4M34hi2.png", // Optional avatar
+                content: "🚀 **New Build Request Received!**",
+                embeds: [{
+                    title: `Build Configuration: ${model}`,
+                    color: 62255, // Decimal color for Cyan
+                    fields: [
+                        { name: "Contact", value: contact, inline: true },
+                        { name: "Budget", value: budget, inline: true },
+                        { name: "Notes & Requests", value: notes }
+                    ],
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            // Send via Fetch API
+            try {
+                const response = await fetch(DISCORD_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    alert("Build request sent successfully! We will contact you soon.");
+                    closeModal();
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("Failed to send request. Please check your Webhook URL or try again later.");
+            } finally {
+                btn.textContent = "Send to Monara Tech";
+                btn.disabled = false;
+            }
+        });
     </script>
 </body>
 </html>
